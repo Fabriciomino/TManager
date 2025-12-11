@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "1050464516326",
+    "project_id": "tmanager-33913",
+    "storage_bucket": "tmanager-33913.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1050464516326:android:4dcc3b1bce65ca6de62327",
+        "android_client_info": {
+          "package_name": "com.example.tmanager"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1050464516326-rpvsmphdsqc9rk4me6kiqv4skoetgrt1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.tmanager",
+            "certificate_hash": "dadf94e242d8fec06ace4fca9bebd526fa927341"
+          }
+        },
+        {
+          "client_id": "1050464516326-cet64fajl37fjt3tqmoepnamg5bd2jau.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDvtt_P1GY-t9nE56U8OL9fDBtQfh0XkTg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1050464516326-cet64fajl37fjt3tqmoepnamg5bd2jau.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

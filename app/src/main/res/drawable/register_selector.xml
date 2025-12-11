@@ -1,0 +1,8 @@
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Cuando está presionado -->
+    <item android:state_pressed="true" android:color="#9C27B0"/>
+    <!-- Cuando está seleccionado, hover o focus -->
+    <item android:state_focused="true" android:color="#CE93D8"/>
+    <!-- Estado normal -->
+    <item android:color="#FFFFFF"/>
+</selector>

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#1A0026"
+    android:padding="32dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_centerInParent="true">
+
+        <TextView
+            android:id="@+id/tvLoginTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Iniciar sesión"
+            android:textColor="#FFFFFF"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            android:paddingBottom="40dp" />
+
+        <!-- EMAIL -->
+        <EditText
+            android:id="@+id/edtEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Correo electrónico"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#AAFFFFFF"
+            android:background="@android:color/transparent"
+            android:padding="10dp"
+            android:inputType="textEmailAddress" />
+
+        <View android:layout_width="match_parent" android:layout_height="2dp" android:background="#FFFFFF" />
+
+        <!-- CONTRASEÑA + OJO -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp">
+
+            <EditText
+                android:id="@+id/edtPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Contraseña"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#AAFFFFFF"
+                android:background="@android:color/transparent"
+                android:padding="10dp"
+                android:inputType="textPassword" />
+
+            <ImageView
+                android:id="@+id/btnVerPassword"
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:src="@drawable/ic_eye_closed"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:padding="5dp" />
+        </RelativeLayout>
+
+        <View android:layout_width="match_parent" android:layout_height="2dp" android:background="#FFFFFF" />
+
+        <!-- BOTÓN GOOGLE -->
+        <ImageView
+            android:id="@+id/btnGoogleLogin"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/circle_white"
+            android:padding="8dp"
+            android:src="@drawable/google" />
+
+        <!-- Enlace al registro -->
+        <TextView
+            android:id="@+id/txtIrRegistro"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="¿No tienes cuenta? Regístrate"
+            android:textColor="#00E676"
+            android:textSize="16sp"
+            android:layout_marginTop="25dp" />
+
+    </LinearLayout>
+
+    <!-- BOTÓN ENTRAR -->
+    <Button
+        android:id="@+id/btnEntrar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Entrar"
+        android:textSize="20sp"
+        android:textColor="#1A0026"
+        android:textStyle="bold"
+        android:background="#00E676"
+        android:padding="15dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
+
+</RelativeLayout>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="75dp"
+    android:background="#1A0026"
+    android:paddingStart="10dp"
+    android:paddingEnd="10dp"
+    android:paddingTop="5dp"
+    android:paddingBottom="5dp">
+
+    <!-- LOGO DEL EQUIPO - REDONDO -->
+    <ImageView
+        android:id="@+id/imgLogo"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:scaleType="centerCrop"
+        android:background="@drawable/circle_mask"
+        android:padding="2dp" />
+
+    <!-- NOMBRE DEL EQUIPO - MÁXIMO 15 CARACTERES -->
+    <TextView
+        android:id="@+id/txtNombreEquipo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Mi equipo"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_toEndOf="@id/imgLogo"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="10dp"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:maxLength="15"/>
+
+    <!-- NOTIFICACIONES -->
+    <ImageView
+        android:id="@+id/imgNotificaciones"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/campana"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="50dp"
+        android:layout_centerVertical="true"/>
+
+    <!-- FOTO DEL USUARIO GOOGLE -->
+    <ImageView
+        android:id="@+id/imgPerfil"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:scaleType="centerCrop"
+        android:background="@drawable/circle_mask"
+        android:padding="2dp"/>
+</RelativeLayout>

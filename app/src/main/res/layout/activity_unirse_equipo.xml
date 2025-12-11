@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#1A0026">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:padding="26dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal">
+
+        <!-- TITULO -->
+        <TextView
+            android:text="Unirte a un equipo"
+            android:textColor="#FFFFFF"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <!-- SUBTÍTULO -->
+        <TextView
+            android:text="Introduce tu información para unirte correctamente."
+            android:textColor="#CCCCCC"
+            android:textSize="14sp"
+            android:gravity="center"
+            android:layout_marginBottom="25dp"
+            android:layout_width="260dp"
+            android:layout_height="wrap_content"/>
+
+
+        <!-- FOTO DEL JUGADOR -->
+        <ImageView
+            android:id="@+id/imgFotoJugador"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/circle_mask"
+            android:scaleType="centerCrop"
+            android:src="@android:drawable/ic_menu_camera"/>
+
+        <TextView
+            android:text="Toca para seleccionar foto"
+            android:textColor="#BBBBBB"
+            android:textSize="12sp"
+            android:layout_marginBottom="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+
+        <!-- CÓDIGO -->
+        <EditText
+            android:id="@+id/edtCodigo"
+            android:hint="Código del equipo"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#AAFFFFFF"
+            android:background="@android:color/transparent"
+            android:padding="10dp"
+            android:layout_marginBottom="18dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1.8dp"
+            android:background="#FFFFFF"
+            android:layout_marginBottom="20dp"/>
+
+
+        <!-- ALIAS -->
+        <EditText
+            android:id="@+id/edtAlias"
+            android:hint="Alias (opcional)"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#AAFFFFFF"
+            android:padding="10dp"
+            android:background="@android:color/transparent"
+            android:layout_marginBottom="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <!-- DORSAL -->
+        <EditText
+            android:id="@+id/edtDorsal"
+            android:hint="Dorsal"
+            android:inputType="number"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#AAFFFFFF"
+            android:padding="10dp"
+            android:background="@android:color/transparent"
+            android:layout_marginBottom="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <!-- SPINNER POSICION -->
+        <Spinner
+            android:id="@+id/spinnerPosicion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:popupBackground="#FFFFFF"
+            android:padding="10dp"
+            android:layout_marginBottom="25dp"/>
+
+
+        <!-- BOTÓN UNIRSE -->
+        <Button
+            android:id="@+id/btnUnirse"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="Unirse al equipo"
+            android:textSize="18sp"
+            android:textColor="#000000"
+            android:textStyle="bold"
+            android:background="#00E676"/>
+    </LinearLayout>
+</ScrollView>

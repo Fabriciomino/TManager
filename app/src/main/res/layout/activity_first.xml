@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#1A0026"
+    android:padding="32dp">
+
+    <!-- CONTENIDO CENTRAL -->
+    <LinearLayout
+        android:id="@+id/centerContent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_centerInParent="true">
+
+        <TextView
+            android:id="@+id/txtTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Bienvenido a Team Manager"
+            android:textColor="#FFFFFF"
+            android:textSize="26sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:paddingBottom="16dp"/>
+
+        <TextView
+            android:id="@+id/txtIntro"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:text="Gestiona tu equipo amateur, organiza partidos, entrenamientos y controla estadísticas en un solo lugar."
+            android:textColor="#FFFFFF"
+            android:textSize="15sp"
+            android:gravity="center"/>
+    </LinearLayout>
+
+    <!-- BOTONES ABAJO DEL TODO -->
+    <LinearLayout
+        android:id="@+id/bottomButtons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_alignParentBottom="true"
+        android:paddingBottom="20dp">
+
+        <!-- INICIAR SESIÓN -->
+        <TextView
+            android:id="@+id/txtIniciar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Iniciar sesión"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:padding="10dp"
+            android:clickable="true"
+            android:focusable="true"/>
+
+        <!-- LINEA CON PREGUNTA + REGISTRAR -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:paddingTop="12dp">
+
+            <TextView
+                android:id="@+id/txtNoCuenta"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="¿No tienes cuenta aún?"
+                android:textColor="#FFFFFF"
+                android:textSize="15sp"/>
+
+            <TextView
+                android:id="@+id/txtRegistrar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="  Regístrate"
+                android:textColor="@color/register_selector"
+                android:textSize="16sp"
+                android:clickable="true"
+                android:focusable="true"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

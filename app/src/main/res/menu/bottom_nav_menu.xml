@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/btnEventos"
+        android:icon="@drawable/eventos"
+        android:title="Eventos" />
+    <item
+        android:id="@+id/btnEquipo"
+        android:icon="@drawable/eventos"
+        android:title="Equipo" />
+    <item
+        android:id="@+id/btnPerfil"
+        android:icon="@drawable/usermenu"
+        android:title="Mi Perfil" />
+</menu>

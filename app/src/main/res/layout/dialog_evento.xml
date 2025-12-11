@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <EditText
+            android:id="@+id/edtTitulo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Título del evento"
+            android:inputType="text"
+            android:padding="10dp"/>
+
+        <EditText
+            android:id="@+id/edtFecha"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Fecha (dd/MM/yyyy)"
+            android:focusable="false"
+            android:clickable="true"
+            android:padding="10dp"
+            android:layout_marginTop="8dp"/>
+
+        <EditText
+            android:id="@+id/edtHora"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Hora (HH:mm)"
+            android:focusable="false"
+            android:clickable="true"
+            android:padding="10dp"
+            android:layout_marginTop="8dp"/>
+
+        <EditText
+            android:id="@+id/edtLugar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Lugar"
+            android:inputType="text"
+            android:padding="10dp"
+            android:layout_marginTop="8dp"/>
+
+        <Spinner
+            android:id="@+id/spinnerTipo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"/>
+
+        <!-- Datos partido -->
+        <LinearLayout
+            android:id="@+id/layoutPartido"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone"
+            android:layout_marginTop="12dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Datos del Partido"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp" />
+
+            <EditText
+                android:id="@+id/edtMiEquipo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Mi equipo"
+                android:inputType="text"
+                android:padding="10dp"
+                android:enabled="false"/>
+
+            <EditText
+                android:id="@+id/edtRival"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Equipo rival"
+                android:inputType="text"
+                android:padding="10dp"
+                android:layout_marginTop="8dp"/>
+
+            <ImageView
+                android:id="@+id/imgEscudoRival"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginTop="8dp"
+                android:scaleType="centerCrop"
+                android:background="@drawable/circle_mask"
+                android:src="@android:drawable/ic_menu_gallery"
+                android:padding="6dp"/>
+
+            <Spinner
+                android:id="@+id/spinnerLocalVisitante"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"/>
+        </LinearLayout>
+
+        <!-- Convocatoria -->
+        <Button
+            android:id="@+id/btnConvocatoria"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Convocatoria"
+            android:layout_marginTop="12dp"/>
+
+        <LinearLayout
+            android:id="@+id/layoutConvocatoria"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone"
+            android:layout_marginTop="8dp"
+            android:padding="8dp"
+            android:background="#F5F5F5">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="end">
+
+                <Button
+                    android:id="@+id/btnEditarConvoc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Editar"
+                    android:visibility="gone"/>
+
+                <Button
+                    android:id="@+id/btnGuardarConvoc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Guardar"
+                    android:layout_marginStart="8dp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/playersContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="6dp"/>
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#1A0026"
+    android:padding="32dp">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:text="Detalles del equipo"
+            android:textColor="#FFFFFF"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            android:paddingBottom="25dp"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:text="Nombre del equipo:"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
+            android:layout_marginBottom="6dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <EditText
+            android:id="@+id/edtNombreEquipo"
+            android:hint="Ej: Los Titanes FC"
+            android:textColor="#FFFFFF"
+            android:background="@android:color/transparent"
+            android:padding="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#FFFFFF"
+            android:layout_marginBottom="25dp"/>
+
+        <TextView
+            android:text="Escudo del equipo:"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <ImageView
+            android:id="@+id/imgEscudo"
+            android:src="@android:drawable/ic_menu_camera"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
+            android:layout_marginTop="15dp"
+            android:background="#33000000"
+            android:padding="20dp"
+            android:layout_gravity="center"/>
+
+        <TextView
+            android:text="Selecciona el deporte:"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
+            android:layout_marginTop="25dp"
+            android:layout_marginBottom="8dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <Spinner
+            android:id="@+id/spinnerDeporte"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:background="#FFFFFF"
+            android:layout_marginBottom="40dp"/>
+
+        <!-- Botón crear equipo -->
+        <Button
+            android:id="@+id/btnCrearEquipo"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="Crear equipo"
+            android:textColor="#000000"
+            android:textStyle="bold"
+            android:background="#00E676"
+            android:textSize="18sp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="50dp"/>
+
+    </LinearLayout>
+</ScrollView>
