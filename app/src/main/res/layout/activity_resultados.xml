@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F2F2F2">
+
+    <!-- HEADER SUPERIOR -->
+    <RelativeLayout
+        android:id="@+id/headerResultados"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="#1A0026"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/txtTituloResultados"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Mis resultados"
+            android:textColor="#FFFFFF"
+            android:textSize="26sp"
+            android:textStyle="bold"
+            android:layout_centerVertical="true" />
+    </RelativeLayout>
+
+    <!-- CARD RESUMEN -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardResumen"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/headerResultados"
+        android:layout_margin="16dp"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="6dp"
+        app:cardUseCompatPadding="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- PARTIDOS JUGADOS -->
+            <TextView
+                android:id="@+id/txtPartidos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textSize="32sp"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:textColor="#000000" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Partidos jugados"
+                android:gravity="center"
+                android:textColor="#777777"
+                android:layout_marginBottom="16dp" />
+
+            <!-- FILA VICTORIAS / EMPATES / DERROTAS -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <!-- VICTORIAS -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="center">
+
+                    <TextView
+                        android:id="@+id/txtVictorias"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:textSize="22sp"
+                        android:textStyle="bold"
+                        android:textColor="#2E7D32" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Victorias"
+                        android:textColor="#777777" />
+                </LinearLayout>
+
+                <!-- EMPATES -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="center">
+
+                    <TextView
+                        android:id="@+id/txtEmpates"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:textSize="22sp"
+                        android:textStyle="bold"
+                        android:textColor="#F9A825" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Empates"
+                        android:textColor="#777777" />
+                </LinearLayout>
+
+                <!-- DERROTAS -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="center">
+
+                    <TextView
+                        android:id="@+id/txtDerrotas"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:textSize="22sp"
+                        android:textStyle="bold"
+                        android:textColor="#C62828" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Derrotas"
+                        android:textColor="#777777" />
+                </LinearLayout>
+
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <!-- LISTA DE PARTIDOS -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerResultados"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/cardResumen"
+        android:layout_marginTop="8dp"
+        android:paddingBottom="16dp" />
+
+</RelativeLayout>

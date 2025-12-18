@@ -1,57 +1,49 @@
-<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <!-- TITULO IGUAL QUE EL DE "MI PERFIL" -->
-    <TextView
-        android:id="@+id/txtTituloEventos"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Mis Eventos"
-        android:textSize="30sp"
-        android:textStyle="bold"
-        android:textColor="@android:color/black"
-        android:paddingTop="16dp"
-        android:paddingStart="16dp" />
-
-    <!-- SUBTÍTULO IGUAL QUE EL DE PERFIL -->
-    <TextView
-        android:id="@+id/txtDescripcionEventos"
+    <!-- BARRA SUPERIOR -->
+    <RelativeLayout
+        android:id="@+id/headerEventos"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Añade aquí entrenamientos, partidos o actividades de tu equipo"
-        android:textSize="15sp"
-        android:textStyle="italic"
-        android:textColor="#AAAAAA"
-        android:layout_below="@id/txtTituloEventos"
-        android:layout_marginTop="10dp"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp" />
+        android:layout_height="80dp"
+        android:layout_alignParentTop="true"
+        android:background="#1A0026">
 
-    <!-- RECYCLER CENTRADO Y MÁS PEQUEÑO -->
+        <TextView
+            android:id="@+id/txtTituloEventos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="10dp"
+            android:text="Mis Eventos"
+            android:textColor="#FFFFFF"
+            android:textSize="30sp"
+            android:textStyle="bold" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btnAgregarEvento"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/txtTituloEventos"
+            android:layout_alignBottom="@id/txtTituloEventos"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="20dp"
+            android:backgroundTint="#00C853"
+            android:src="@android:drawable/ic_input_add"
+            app:fabSize="mini"
+            app:tint="@android:color/white" />
+
+    </RelativeLayout>   <!-- ⬅ AQUÍ SE CIERRA EL HEADER -->
+
+    <!-- RECYCLER VIEW DEBAJO DEL HEADER -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerEventos"
-        android:layout_width="390dp"
-        android:layout_height="520dp"
-        android:layout_below="@id/txtDescripcionEventos"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="11dp"
-        android:padding="10dp" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/btnAgregarEvento"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_below="@id/txtDescripcionEventos"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="18dp"
-        android:src="@android:drawable/ic_input_add"
-        app:fabSize="mini"
-        app:tint="@android:color/black" />
-
+        android:layout_width="match_parent"
+        android:layout_height="896dp"
+        android:layout_below="@id/headerEventos"
+        android:layout_marginTop="-15dp"
+        android:padding="16dp" />
 
 </RelativeLayout>

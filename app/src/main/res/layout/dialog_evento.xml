@@ -127,20 +127,6 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="end">
-
-                <Button
-                    android:id="@+id/btnEditarConvoc"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Editar"
-                    android:visibility="gone"/>
-
-                <Button
-                    android:id="@+id/btnGuardarConvoc"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Guardar"
-                    android:layout_marginStart="8dp"/>
             </LinearLayout>
 
             <LinearLayout

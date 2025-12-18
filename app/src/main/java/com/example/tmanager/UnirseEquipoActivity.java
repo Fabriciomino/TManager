@@ -149,11 +149,47 @@ public class UnirseEquipoActivity extends AppCompatActivity {
                     Map<String, Object> updateUser = new HashMap<>();
                     updateUser.put("rol", "jugador");
                     updateUser.put("equipoId", equipoId);
+                    if (fotoUrl != null) {
+                        updateUser.put("fotoUrl", fotoUrl);
+                    }
 
                     db.collection("usuarios").document(uid)
                             .update(updateUser)
                             .addOnSuccessListener(v -> {
 
+                                // ===============================
+                                // 🔔 NOTIFICACIONES
+                                // ===============================
+
+                                String entrenadorUid = equipoDoc.getString("entrenadorUid");
+
+                                // 🔔 AL ENTRENADOR
+                                if (entrenadorUid != null && !entrenadorUid.equals(uid)) {
+                                    NotificacionUtil.crear(
+                                            entrenadorUid,
+                                            equipoId,
+                                            "union_equipo",
+                                            "Nuevo jugador",
+                                            nombreJugador + " se ha unido al equipo",
+                                            null   // 👈 IMPORTANTE
+                                    );
+
+                                }
+
+                                // 🔔 AL JUGADOR
+                                NotificacionUtil.crear(
+                                        uid,
+                                        equipoId,
+                                        "union_ok",
+                                        "Bienvenido",
+                                        "Te has unido correctamente al equipo",
+                                        null   // 👈 IMPORTANTE
+                                );
+
+
+                                // ===============================
+                                // GUARDAR PREFS Y NAVEGAR
+                                // ===============================
                                 getSharedPreferences("EQUIPO", MODE_PRIVATE)
                                         .edit()
                                         .putString("nombre", equipoDoc.getString("nombre"))
@@ -161,9 +197,17 @@ public class UnirseEquipoActivity extends AppCompatActivity {
                                         .putString("equipoId", equipoId)
                                         .apply();
 
-                                Toast.makeText(this, "Te has unido al equipo correctamente", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(this,
+                                        "Te has unido al equipo correctamente",
+                                        Toast.LENGTH_SHORT).show();
+
+                                Intent i = new Intent(this, MainActivity.class);
+                                i.putExtra("open", "eventos");
+                                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(i);
                                 finish();
                             });
                 });
     }
+
 }

@@ -1,5 +1,6 @@
 package com.example.tmanager;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,11 +16,17 @@ import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.ListenerRegistration;
 
 public class FragmentSuperiorActivity extends Fragment {
 
     TextView txtNombreEquipo;
     ImageView imgLogo, imgPerfil;
+    ImageView imgNotificaciones;
+    TextView txtBadge;
+
+    ListenerRegistration notifListener;
+
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -34,30 +41,63 @@ public class FragmentSuperiorActivity extends Fragment {
         txtNombreEquipo = view.findViewById(R.id.txtNombreEquipo);
         imgLogo = view.findViewById(R.id.imgLogo);
         imgPerfil = view.findViewById(R.id.imgPerfil);
+        imgNotificaciones = view.findViewById(R.id.imgNotificaciones);
+        txtBadge = view.findViewById(R.id.txtBadge);
 
         cargarFotoUsuario();
         cargarDatosEquipo();
 
-        return view;
+        imgNotificaciones.setOnClickListener(v -> {
+            startActivity(new Intent(getContext(), NotificacionesActivity.class));
+        });
+
+        return view; // ✅ SIEMPRE AL FINAL
     }
+
 
     // --------------------------------------------------------
     // FOTO DEL PERFIL (Google o icono por defecto)
     // --------------------------------------------------------
     private void cargarFotoUsuario() {
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-        if (user != null && user.getPhotoUrl() != null) {
-            // Usuario de Google → cargar su foto
-            Glide.with(requireContext())
-                    .load(user.getPhotoUrl())
-                    .circleCrop()
-                    .into(imgPerfil);
-        } else {
-            // Si no hay foto → icono por defecto
-            imgPerfil.setImageResource(R.drawable.userlogo);
-        }
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user == null) return;
+
+        String uid = user.getUid();
+
+        // 1️⃣ INTENTAR FOTO GUARDADA EN FIRESTORE
+        db.collection("usuarios").document(uid)
+                .get()
+                .addOnSuccessListener(doc -> {
+
+                    if (doc.exists()) {
+                        String fotoUrl = doc.getString("fotoUrl");
+
+                        if (fotoUrl != null && !fotoUrl.isEmpty()) {
+                            Glide.with(requireContext())
+                                    .load(fotoUrl)
+                                    .circleCrop()
+                                    .into(imgPerfil);
+                            return;
+                        }
+                    }
+
+                    // 2️⃣ SI NO HAY → FOTO DE GOOGLE
+                    if (user.getPhotoUrl() != null) {
+                        Glide.with(requireContext())
+                                .load(user.getPhotoUrl())
+                                .circleCrop()
+                                .into(imgPerfil);
+                    } else {
+                        // 3️⃣ SI NO HAY NADA → ICONO
+                        imgPerfil.setImageResource(R.drawable.userlogo);
+                    }
+                })
+                .addOnFailureListener(e ->
+                        imgPerfil.setImageResource(R.drawable.userlogo)
+                );
     }
+
 
     // --------------------------------------------------------
     // CARGAR NOMBRE Y LOGO DEL EQUIPO
@@ -120,4 +160,36 @@ public class FragmentSuperiorActivity extends Fragment {
             });
         });
     }
+
+    private void escucharNotificaciones() {
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user == null) return;
+
+        notifListener = db.collection("notificaciones")
+                .whereEqualTo("userUid", user.getUid())
+                .whereEqualTo("leida", false)
+                .addSnapshotListener((snap, e) -> {
+
+                    if (snap == null) return;
+
+                    int count = snap.size();
+
+                    if (count > 0) {
+                        txtBadge.setText(String.valueOf(count));
+                        txtBadge.setVisibility(View.VISIBLE);
+                    } else {
+                        txtBadge.setVisibility(View.GONE);
+                    }
+                });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        cargarFotoUsuario();
+        escucharNotificaciones();
+    }
+
+
 }

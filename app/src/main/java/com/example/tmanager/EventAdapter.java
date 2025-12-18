@@ -54,53 +54,64 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
             holder.titulo.setText(evento.getTitulo());
             holder.imgEscudoLeft.setVisibility(View.GONE);
             holder.imgEscudoRight.setVisibility(View.GONE);
-            return;
-        }
-
-        holder.imgEscudoLeft.setVisibility(View.VISIBLE);
-        holder.imgEscudoRight.setVisibility(View.VISIBLE);
-
-        String titulo;
-
-        String miLogo = evento.getMiEquipoLogo(); // puede ser null
-        String rivalLogo = evento.getRivalEscudoUrl(); // puede ser null
-
-        if (evento.isEsLocal()) {
-            titulo = evento.getMiEquipo() + " vs " + evento.getRival();
-
-            // izquierda = mi equipo
-            if (miLogo != null) {
-                Glide.with(context).load(miLogo).circleCrop().into(holder.imgEscudoLeft);
-            } else {
-                holder.imgEscudoLeft.setImageResource(R.drawable.circle_empty);
-            }
-
-            // derecha = rival
-            if (rivalLogo != null) {
-                Glide.with(context).load(rivalLogo).circleCrop().into(holder.imgEscudoRight);
-            } else {
-                holder.imgEscudoRight.setImageResource(R.drawable.circle_empty);
-            }
-
         } else {
-            titulo = evento.getRival() + " vs " + evento.getMiEquipo();
+            holder.imgEscudoLeft.setVisibility(View.VISIBLE);
+            holder.imgEscudoRight.setVisibility(View.VISIBLE);
 
-            // izquierda = rival
-            if (rivalLogo != null) {
-                Glide.with(context).load(rivalLogo).circleCrop().into(holder.imgEscudoLeft);
+            String titulo;
+
+            String miLogo = evento.getMiEquipoLogo();
+            String rivalLogo = evento.getRivalEscudoUrl();
+
+            if (evento.isEsLocal()) {
+                titulo = evento.getMiEquipo() + " vs " + evento.getRival();
+
+                if (miLogo != null)
+                    Glide.with(context).load(miLogo).circleCrop().into(holder.imgEscudoLeft);
+                else
+                    holder.imgEscudoLeft.setImageResource(R.drawable.circle_empty);
+
+                if (rivalLogo != null)
+                    Glide.with(context).load(rivalLogo).circleCrop().into(holder.imgEscudoRight);
+                else
+                    holder.imgEscudoRight.setImageResource(R.drawable.circle_empty);
+
             } else {
-                holder.imgEscudoLeft.setImageResource(R.drawable.circle_empty);
+                titulo = evento.getRival() + " vs " + evento.getMiEquipo();
+
+                if (rivalLogo != null)
+                    Glide.with(context).load(rivalLogo).circleCrop().into(holder.imgEscudoLeft);
+                else
+                    holder.imgEscudoLeft.setImageResource(R.drawable.circle_empty);
+
+                if (miLogo != null)
+                    Glide.with(context).load(miLogo).circleCrop().into(holder.imgEscudoRight);
+                else
+                    holder.imgEscudoRight.setImageResource(R.drawable.circle_empty);
             }
 
-            // derecha = mi equipo
-            if (miLogo != null) {
-                Glide.with(context).load(miLogo).circleCrop().into(holder.imgEscudoRight);
-            } else {
-                holder.imgEscudoRight.setImageResource(R.drawable.circle_empty);
-            }
+            holder.titulo.setText(titulo);
         }
 
-        holder.titulo.setText(titulo);
+
+// INDICADOR DE ASISTENCIA
+// =========================
+        String asistencia = evento.getMiAsistencia();
+
+        holder.asistencia.setVisibility(View.GONE);
+
+// Solo para jugadores
+        if (asistencia != null) {
+            holder.asistencia.setVisibility(View.VISIBLE);
+
+            if ("si".equals(asistencia)) {
+                holder.asistencia.setText("✔ Asistiré");
+                holder.asistencia.setTextColor(0xFF2E7D32); // verde
+            } else if ("no".equals(asistencia)) {
+                holder.asistencia.setText("✖ No asistiré");
+                holder.asistencia.setTextColor(0xFFC62828); // rojo
+            }
+        }
     }
 
     @Override
@@ -109,7 +120,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
     }
 
     public class EventViewHolder extends RecyclerView.ViewHolder {
-        TextView titulo, fechaHora, lugar;
+        TextView titulo, fechaHora, lugar, asistencia;
         ImageView imgEscudoLeft, imgEscudoRight;
 
         public EventViewHolder(@NonNull View itemView) {
@@ -118,6 +129,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
             titulo = itemView.findViewById(R.id.txtTitulo);
             fechaHora = itemView.findViewById(R.id.txtFechaHora);
             lugar = itemView.findViewById(R.id.txtLugar);
+            asistencia = itemView.findViewById(R.id.txtAsistencia);
 
             imgEscudoLeft = itemView.findViewById(R.id.imgEscudoLeft);
             imgEscudoRight = itemView.findViewById(R.id.imgEscudoRight);
@@ -129,4 +141,5 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
             });
         }
     }
+
 }

@@ -37,8 +37,14 @@
         <activity android:name=".LoginActivity" android:exported="true" />
         <activity android:name=".RegisterActivity" android:exported="true" />
         <activity android:name=".WelcomeActivity" android:exported="true" />
-
-
+        <activity android:name=".ResultadosActivity" android:exported="true" />
+        <activity android:name=".EstadisticasJugadoresActivity" android:exported="true" />
+        <activity android:name=".RegistroAsistenciaActivity" android:exported="true" />
+        <activity android:name=".DetalleAsistenciaEventoActivity" android:exported="true" />
+        <activity android:name=".MiInformacionActivity" android:exported="true" />
+        <activity android:name=".DetallesEquipoActivity" android:exported="true" />
+        <activity android:name=".MiembrosActivity" android:exported="true" />
+        <activity android:name=".NotificacionesActivity" android:exported="true" />
 
     </application>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>

@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity extends AppCompatActivity {
     BottomNavigationView bottomNavigationView;
@@ -24,8 +25,16 @@ public class MainActivity extends AppCompatActivity {
 
         // Bottom nav
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
-        bottomNavigationView.setSelectedItemId(R.id.btnEventos);
-        loadFragment(new EventosFragment());
+        String open = getIntent().getStringExtra("open");
+
+        if ("eventos".equals(open)) {
+            bottomNavigationView.setSelectedItemId(R.id.btnEventos);
+            loadFragment(new EventosFragment());
+        } else {
+            bottomNavigationView.setSelectedItemId(R.id.btnEventos);
+            loadFragment(new EventosFragment());
+        }
+
 
         bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
             Fragment fragment = null;
@@ -39,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
             }
             return false;
         });
+
     }
 
     private void loadFragment(Fragment fragment) {
@@ -46,4 +56,7 @@ public class MainActivity extends AppCompatActivity {
                 .replace(R.id.fragmentContainer, fragment)
                 .commit();
     }
+
+
 }
+

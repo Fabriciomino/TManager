@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Resultado del Partido"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- GOLES -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/edtGolesLocal"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:inputType="number"
+                android:hint="Goles Mi Equipo"/>
+
+            <EditText
+                android:id="@+id/edtGolesRival"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:inputType="number"
+                android:hint="Goles Rival"
+                android:layout_marginStart="12dp"/>
+        </LinearLayout>
+
+        <!-- LISTA DE INCIDENTES -->
+        <TextView
+            android:text="Goles y Asistencias"
+            android:textStyle="bold"
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <LinearLayout
+            android:id="@+id/containerGoles"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <Button
+            android:id="@+id/btnAddGol"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Añadir Gol"
+            android:layout_marginTop="10dp"/>
+
+        <TextView
+            android:text="Tarjetas"
+            android:textStyle="bold"
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <LinearLayout
+            android:id="@+id/containerTarjetas"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <Button
+            android:id="@+id/btnAddTarjeta"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Añadir Tarjeta"
+            android:layout_marginTop="10dp"/>
+
+        <Button
+            android:id="@+id/btnGuardarResultado"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Guardar"
+            android:layout_marginTop="20dp"/>
+    </LinearLayout>
+</ScrollView>

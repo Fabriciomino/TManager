@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- HEADER -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:background="#1A0026">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="16dp">
+
+                <TextView
+                    android:id="@+id/txtTituloEvento"
+                    android:text="Evento"
+                    android:textColor="#FFFFFF"
+                    android:textSize="22sp"
+                    android:textStyle="bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:id="@+id/txtFechaEvento"
+                    android:text="21/09/2025 · 18:30"
+                    android:textColor="#DDDDDD"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+        </RelativeLayout>
+
+        <!-- ASISTEN -->
+        <TextView
+            android:text="✔ Asisten"
+            android:textStyle="bold"
+            android:textColor="#2E7D32"
+            android:padding="12dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <LinearLayout
+            android:id="@+id/layoutSi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"/>
+
+        <!-- NO ASISTEN -->
+        <TextView
+            android:text="✖ No asisten"
+            android:textStyle="bold"
+            android:textColor="#C62828"
+            android:padding="12dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <LinearLayout
+            android:id="@+id/layoutNo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"/>
+
+        <!-- PENDIENTES -->
+        <TextView
+            android:text="⏳ Pendientes"
+            android:textStyle="bold"
+            android:textColor="#757575"
+            android:padding="12dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <LinearLayout
+            android:id="@+id/layoutPendiente"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"/>
+
+    </LinearLayout>
+</ScrollView>

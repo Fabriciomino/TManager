@@ -158,7 +158,11 @@ public class CrearEquipoActivity extends AppCompatActivity {
                                                 .update(datosUsuario);
 
                                         Toast.makeText(this, "Equipo creado correctamente", Toast.LENGTH_SHORT).show();
-
+                                        // 🔥 LIMPIAR CACHÉ DEL EQUIPO ANTERIOR
+                                        getSharedPreferences("EQUIPO", MODE_PRIVATE)
+                                                .edit()
+                                                .clear()
+                                                .apply();
                                         // Ir a MainActivity y borrar historial
                                         Intent intent = new Intent(CrearEquipoActivity.this, MainActivity.class);
                                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

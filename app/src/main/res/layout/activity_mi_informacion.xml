@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F5F5F5">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- HEADER -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:background="#1A0026">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mi información"
+                android:textColor="#FFFFFF"
+                android:textSize="26sp"
+                android:textStyle="bold"
+                android:layout_marginStart="16dp"
+                android:layout_centerVertical="true"/>
+        </RelativeLayout>
+
+        <!-- FOTO PERFIL -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="20dp">
+
+            <ImageView
+                android:id="@+id/imgPerfil"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/userlogo"
+                android:background="@drawable/circle_mask"
+                android:scaleType="centerCrop"/>
+
+            <TextView
+                android:id="@+id/btnCambiarFoto"
+                android:text="Cambiar foto"
+                android:textColor="#6A1B9A"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"/>
+        </LinearLayout>
+
+        <!-- DATOS -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <EditText
+                android:id="@+id/edtNombre"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Nombre / Alias"/>
+
+            <TextView
+                android:id="@+id/txtEmail"
+                android:layout_marginTop="12dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#555"/>
+
+        </LinearLayout>
+
+        <!-- ACCIONES -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <Button
+                android:id="@+id/btnCambiarPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Cambiar contraseña"/>
+
+            <Button
+                android:id="@+id/btnCerrarSesion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Cerrar sesión"
+                android:layout_marginTop="8dp"/>
+
+            <Button
+                android:id="@+id/btnEliminarCuenta"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Eliminar cuenta"
+                android:textColor="#C62828"
+                android:layout_marginTop="8dp"/>
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>
