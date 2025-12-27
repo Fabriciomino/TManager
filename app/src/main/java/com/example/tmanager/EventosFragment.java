@@ -523,19 +523,25 @@ public class EventosFragment extends Fragment {
                                     : "Convocado a evento";
 
                             String mensajeNotif = esPartido
-                                    ? "Has sido convocado al partido: " + titulo
+                                    ? "Has sido convocado a un nuevo partido"
                                     : "Has sido convocado al evento: " + titulo;
+
+                            String tipoNotif = esPartido
+                                    ? "convocatoria_partido"
+                                    : "convocatoria_evento";
+
 
                             for (String uidJugador : convocados) {
                                 NotificacionUtil.crear(
                                         uidJugador,
                                         equipoId,
-                                        "convocatoria",
+                                        tipoNotif,
                                         tituloNotif,
                                         mensajeNotif,
                                         docRef.getId()
                                 );
                             }
+
 
                         }
                     });

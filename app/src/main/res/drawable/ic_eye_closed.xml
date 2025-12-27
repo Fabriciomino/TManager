@@ -3,7 +3,31 @@
     android:height="24dp"
     android:viewportWidth="24"
     android:viewportHeight="24">
+
+    <!-- OJO ORIGINAL (SIN MODIFICAR) -->
     <path
-        android:fillColor="#FFFFFF"
-        android:pathData="M12,6c-4.97,0 -9.25,3.03 -11,7.5 0.55,1.4 1.36,2.66 2.38,3.75l-1.45,1.45 1.41,1.41 18.38,-18.38 -1.41,-1.41 -3.11,3.12C15.88,6.52 13.99,6 12,6zM12,18c-2.76,0 -5,-2.24 -5,-5 0,-0.52 0.08,-1.02 0.23,-1.49l6.26,6.26C12.98,17.92 12.5,18 12,18z"/>
+        android:fillColor="#FFFF"
+        android:pathData="M12,4.5
+        C7,4.5 2.73,7.61 1,12
+        c1.73,4.39 6,7.5 11,7.5
+        s9.27,-3.11 11,-7.5
+        C21.27,7.61 17,4.5 12,4.5z
+        M12,17
+        c-2.76,0 -5,-2.24 -5,-5
+        s2.24,-5 5,-5
+        5,2.24 5,5
+        -2.24,5 -5,5z
+        M12,9
+        c-1.66,0 -3,1.34 -3,3
+        s1.34,3 3,3
+        3,-1.34 3,-3
+        -1.34,-3 -3,-3z"/>
+
+    <!-- RAYA DIAGONAL (ENCIMA, NO RECORTA) -->
+    <path
+        android:strokeColor="#FFFF"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:fillColor="@android:color/transparent"
+        android:pathData="M3,3 L21,21"/>
 </vector>

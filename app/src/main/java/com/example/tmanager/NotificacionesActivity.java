@@ -18,6 +18,8 @@ public class NotificacionesActivity extends AppCompatActivity {
     private RecyclerView recycler;
     private NotificacionesAdapter adapter;
     private List<NotificacionModel> lista = new ArrayList<>();
+    private boolean primeraCarga = true;
+
 
     private FirebaseFirestore db;
 
@@ -38,6 +40,7 @@ public class NotificacionesActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
 
         cargarNotificaciones();
+
     }
 
     // =====================================================
@@ -62,33 +65,78 @@ public class NotificacionesActivity extends AppCompatActivity {
                         lista.add(n);
                     }
 
+                    // 1️⃣ Pintar según estado actual
                     adapter.notifyDataSetChanged();
+
                 });
     }
+
 
     // =====================================================
     //        CLICK EN UNA NOTIFICACIÓN
     // =====================================================
     private void onNotificacionClick(NotificacionModel n) {
 
-        // 1️⃣ MARCAR COMO LEÍDA
-        if (!n.leida) {
-            db.collection("notificaciones")
-                    .document(n.id)
-                    .update("leida", true);
+        Intent i;
+
+        switch (n.tipo) {
+
+            // 💬 MENSAJES
+            case "mensaje":
+                i = new Intent(this, MensajesActivity.class);
+                startActivity(i);
+                break;
+
+            // ✅ ASISTENCIA
+            case "asistencia":
+                i = new Intent(this, RegistroAsistenciaActivity.class);
+                startActivity(i);
+                break;
+
+            // ⚽ CONVOCATORIAS
+            case "convocatoria_partido":
+            case "convocatoria_evento":
+                if (n.eventoId != null) {
+                    i = new Intent(this, MainActivity.class);
+                    i.putExtra("open", "eventos");
+                    i.putExtra("eventoId", n.eventoId);
+                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(i);
+                }
+                break;
+
+            // 👥 NUEVO JUGADOR
+            case "union_equipo":
+                i = new Intent(this, MiembrosActivity.class);
+                startActivity(i);
+                break;
         }
 
-        // 2️⃣ ABRIR EVENTO SI EXISTE
-        if (n.eventoId != null) {
-
-            Intent i = new Intent(this, MainActivity.class);
-            i.putExtra("open", "eventos");
-            i.putExtra("eventoId", n.eventoId);
-            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(i);
-        }
-
-        // 3️⃣ CERRAR NOTIFICACIONES
         finish();
     }
+
+
+
+    private void marcarComoLeidas() {
+
+        WriteBatch batch = db.batch();
+
+        for (NotificacionModel n : lista) {
+            if (!n.leida) {
+                batch.update(
+                        db.collection("notificaciones").document(n.id),
+                        "leida", true
+                );
+            }
+        }
+
+        batch.commit();
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        marcarComoLeidas();
+    }
+
+
 }

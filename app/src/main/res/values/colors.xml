@@ -8,4 +8,6 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="mi_color_barra_estado">#1A0026</color>
+    <color name="notif_no_leida">#E0E0E0</color>
+    <color name="notif_leida">#F2F2F2</color>
 </resources>

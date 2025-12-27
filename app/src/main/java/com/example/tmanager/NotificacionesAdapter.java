@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -52,12 +53,24 @@ public class NotificacionesAdapter
         h.txtMensaje.setText(n.mensaje);
         h.txtFecha.setText(formatearFecha(n.timestamp));
 
+        // 🎨 COLOR SEGÚN LEÍDA / NO LEÍDA
+        if (n.leida) {
+            h.layout.setBackgroundColor(
+                    context.getResources().getColor(R.color.notif_leida)
+            );
+        } else {
+            h.layout.setBackgroundColor(
+                    context.getResources().getColor(R.color.notif_no_leida)
+            );
+        }
         h.itemView.setOnClickListener(v -> {
             if (listener != null) {
                 listener.onClick(n);
             }
         });
+
     }
+
 
     @Override
     public int getItemCount() {
@@ -67,14 +80,17 @@ public class NotificacionesAdapter
     static class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView txtTitulo, txtMensaje, txtFecha;
+        LinearLayout layout;
 
         ViewHolder(View itemView) {
             super(itemView);
+            layout = itemView.findViewById(R.id.layoutNotif);
             txtTitulo = itemView.findViewById(R.id.txtTitulo);
             txtMensaje = itemView.findViewById(R.id.txtMensaje);
             txtFecha = itemView.findViewById(R.id.txtFecha);
         }
     }
+
 
     // ----------------------------------------
     // FECHA RELATIVA

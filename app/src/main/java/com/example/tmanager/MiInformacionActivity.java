@@ -4,14 +4,17 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.InputType;
+import android.text.TextWatcher;
+import android.view.View;
 import android.widget.*;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.*;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -21,120 +24,98 @@ import java.util.UUID;
 public class MiInformacionActivity extends AppCompatActivity {
 
     ImageView imgPerfil;
-    EditText edtNombre;
-    TextView txtEmail, btnCambiarFoto;
-    Button btnCambiarPassword, btnCerrarSesion, btnEliminarCuenta;
+    EditText edtNombre, edtPassActual, edtPassNueva, edtPassConfirmar;
+    ImageView btnSaveNombre, btnSavePassword;
+    ImageView eyeActual, eyeNueva, eyeConfirmar;
+    TextView txtEmail;
+    Button btnCerrarSesion, btnEliminarCuenta;
 
-    Uri fotoUri;
+    TextView rule1, rule2, rule3, rule4, rule5;
+    LinearLayout layoutPassword;
 
     FirebaseAuth auth = FirebaseAuth.getInstance();
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
+    Uri fotoUri;
+    boolean esGoogle = false;
+
     private static final int PICK_IMAGE = 101;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void onCreate(Bundle b) {
+        super.onCreate(b);
         setContentView(R.layout.activity_mi_informacion);
 
         imgPerfil = findViewById(R.id.imgPerfil);
         edtNombre = findViewById(R.id.edtNombre);
         txtEmail = findViewById(R.id.txtEmail);
-        btnCambiarFoto = findViewById(R.id.btnCambiarFoto);
-        btnCambiarPassword = findViewById(R.id.btnCambiarPassword);
+
+        edtPassActual = findViewById(R.id.edtPasswordActual);
+        edtPassNueva = findViewById(R.id.edtPasswordNueva);
+        edtPassConfirmar = findViewById(R.id.edtPasswordConfirmar);
+
+        btnSaveNombre = findViewById(R.id.btnSaveNombre);
+        btnSavePassword = findViewById(R.id.btnSavePassword);
+
+        eyeActual = findViewById(R.id.btnEyeActual);
+        eyeNueva = findViewById(R.id.btnEyeNueva);
+        eyeConfirmar = findViewById(R.id.btnEyeConfirmar);
+
         btnCerrarSesion = findViewById(R.id.btnCerrarSesion);
         btnEliminarCuenta = findViewById(R.id.btnEliminarCuenta);
 
+        layoutPassword = findViewById(R.id.layoutPassword);
+
+        rule1 = findViewById(R.id.rule1);
+        rule2 = findViewById(R.id.rule2);
+        rule3 = findViewById(R.id.rule3);
+        rule4 = findViewById(R.id.rule4);
+        rule5 = findViewById(R.id.rule5);
+
+        detectarProveedor();
         cargarDatos();
+        configurarOjos();
+        configurarValidacionPassword();
+        cargarFotoPerfil();
 
-        btnCambiarFoto.setOnClickListener(v -> seleccionarFoto());
 
-        btnCambiarPassword.setOnClickListener(v ->
-                auth.sendPasswordResetEmail(txtEmail.getText().toString())
-        );
+        // FOTO
+        imgPerfil.setOnClickListener(v -> seleccionarFoto());
+
+        // GUARDAR NOMBRE
+        btnSaveNombre.setOnClickListener(v -> confirmarGuardarNombre());
+
+        // GUARDAR PASSWORD
+        btnSavePassword.setOnClickListener(v -> confirmarGuardarPassword());
 
         btnCerrarSesion.setOnClickListener(v -> cerrarSesion());
-
         btnEliminarCuenta.setOnClickListener(v -> confirmarEliminarCuenta());
     }
 
-    // 🔄 Al volver de cambiar foto, refresca
+    // 🔴 ATRÁS = NO GUARDAR NADA
     @Override
-    protected void onResume() {
-        super.onResume();
-        cargarFotoPerfil();
+    public void onBackPressed() {
+        finish();
     }
 
-    // --------------------------------------------------
-    // CARGAR DATOS USUARIO
-    // --------------------------------------------------
-    private void cargarDatos() {
-
-        FirebaseUser user = auth.getCurrentUser();
-        if (user == null) return;
-
-        txtEmail.setText(user.getEmail());
-
-        db.collection("usuarios").document(user.getUid())
-                .get()
-                .addOnSuccessListener(doc -> {
-                    if (!doc.exists()) return;
-
-                    edtNombre.setText(doc.getString("nombre"));
-                });
-
-        cargarFotoPerfil();
-    }
-
-    // --------------------------------------------------
-    // FOTO PERFIL (MISMA LÓGICA QUE EL FRAGMENT)
-    // --------------------------------------------------
-    private void cargarFotoPerfil() {
-
-        FirebaseUser user = auth.getCurrentUser();
-        if (user == null) return;
-
-        db.collection("usuarios").document(user.getUid())
-                .get()
-                .addOnSuccessListener(doc -> {
-
-                    String fotoUrl = doc.getString("fotoUrl");
-
-                    if (fotoUrl != null && !fotoUrl.isEmpty()) {
-                        Glide.with(this)
-                                .load(fotoUrl)
-                                .circleCrop()
-                                .into(imgPerfil);
-                    } else if (user.getPhotoUrl() != null) {
-                        Glide.with(this)
-                                .load(user.getPhotoUrl())
-                                .circleCrop()
-                                .into(imgPerfil);
-                    } else {
-                        imgPerfil.setImageResource(R.drawable.userlogo);
-                    }
-                });
-    }
-
-    // --------------------------------------------------
-    // SELECCIONAR FOTO
-    // --------------------------------------------------
+    // -----------------------------------------
+    // FOTO PERFIL
+    // -----------------------------------------
     private void seleccionarFoto() {
         Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(i, PICK_IMAGE);
     }
 
-    // --------------------------------------------------
-    // SUBIR FOTO Y GUARDAR EN FIRESTORE
-    // --------------------------------------------------
     @Override
-    protected void onActivityResult(int r, int c, Intent d) {
-        super.onActivityResult(r, c, d);
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
-        if (r == PICK_IMAGE && c == RESULT_OK && d != null) {
+        if (requestCode == PICK_IMAGE && resultCode == RESULT_OK && data != null) {
 
-            fotoUri = d.getData();
+            fotoUri = data.getData();
+            if (fotoUri == null) return;
 
+            // PREVIEW INMEDIATA
             Glide.with(this)
                     .load(fotoUri)
                     .circleCrop()
@@ -143,49 +124,250 @@ public class MiInformacionActivity extends AppCompatActivity {
             FirebaseUser user = auth.getCurrentUser();
             if (user == null) return;
 
+            // SUBIR A STORAGE
             StorageReference ref = FirebaseStorage.getInstance()
-                    .getReference("usuarios/fotos/" + UUID.randomUUID() + ".jpg");
+                    .getReference("usuarios/fotos/" + user.getUid() + ".jpg");
 
             ref.putFile(fotoUri)
                     .addOnSuccessListener(task ->
                             ref.getDownloadUrl().addOnSuccessListener(url -> {
 
-                                // ✅ GUARDAR EN FIRESTORE (CLAVE)
+                                String fotoNueva = url.toString();
+
+// 1️⃣ GUARDAR EN FIRESTORE
                                 db.collection("usuarios")
                                         .document(user.getUid())
-                                        .update("fotoUrl", url.toString());
+                                        .update("fotoUrl", fotoNueva);
+
+// 2️⃣ ACTUALIZAR FIREBASE AUTH (CLAVE 🔥)
+                                UserProfileChangeRequest profileUpdates =
+                                        new UserProfileChangeRequest.Builder()
+                                                .setPhotoUri(Uri.parse(fotoNueva))
+                                                .build();
+
+                                user.updateProfile(profileUpdates)
+                                        .addOnSuccessListener(a ->
+                                                Toast.makeText(this,
+                                                        "Foto de perfil actualizada",
+                                                        Toast.LENGTH_SHORT).show()
+                                        );
+
                             })
+                    )
+                    .addOnFailureListener(e ->
+                            Toast.makeText(this,
+                                    "Error subiendo imagen",
+                                    Toast.LENGTH_SHORT).show()
                     );
         }
     }
 
-    // --------------------------------------------------
-    // CERRAR SESIÓN
-    // --------------------------------------------------
+
+    // -----------------------------------------
+    // NOMBRE
+    // -----------------------------------------
+    private void confirmarGuardarNombre() {
+        String nombre = edtNombre.getText().toString().trim();
+        if (nombre.isEmpty()) {
+            toast("El nombre no puede estar vacío");
+            return;
+        }
+
+        new AlertDialog.Builder(this)
+                .setTitle("Cambiar nombre")
+                .setMessage("¿Deseas guardar este nombre?")
+                .setPositiveButton("Guardar", (d, w) ->
+                        db.collection("usuarios")
+                                .document(auth.getUid())
+                                .update("nombre", nombre))
+                .setNegativeButton("Cancelar", null)
+                .show();
+    }
+
+    // -----------------------------------------
+    // PASSWORD
+    // -----------------------------------------
+    private void confirmarGuardarPassword() {
+
+        String actual = edtPassActual.getText().toString();
+        String nueva = edtPassNueva.getText().toString();
+        String confirmar = edtPassConfirmar.getText().toString();
+
+        if (actual.isEmpty() || nueva.isEmpty() || confirmar.isEmpty()) {
+            toast("Completa todos los campos");
+            return;
+        }
+
+        if (!passwordValida(nueva)) {
+            toast("La contraseña no cumple los requisitos");
+            return;
+        }
+
+        if (!nueva.equals(confirmar)) {
+            toast("Las contraseñas no coinciden");
+            return;
+        }
+
+        new AlertDialog.Builder(this)
+                .setTitle("Cambiar contraseña")
+                .setMessage("¿Deseas cambiar tu contraseña?")
+                .setPositiveButton("Cambiar", (d, w) -> cambiarPassword(actual, nueva))
+                .setNegativeButton("Cancelar", null)
+                .show();
+    }
+
+    private void cambiarPassword(String actual, String nueva) {
+        FirebaseUser user = auth.getCurrentUser();
+        if (user == null) return;
+
+        AuthCredential cred =
+                EmailAuthProvider.getCredential(user.getEmail(), actual);
+
+        user.reauthenticate(cred)
+                .addOnSuccessListener(a ->
+                        user.updatePassword(nueva)
+                                .addOnSuccessListener(b ->
+                                        toast("Contraseña actualizada")))
+                .addOnFailureListener(e ->
+                        toast("Contraseña actual incorrecta"));
+    }
+
+    // -----------------------------------------
+    // OJOS
+    // -----------------------------------------
+    private void configurarOjos() {
+        toggleEye(eyeActual, edtPassActual);
+        toggleEye(eyeNueva, edtPassNueva);
+        toggleEye(eyeConfirmar, edtPassConfirmar);
+    }
+
+    private void toggleEye(ImageView eye, EditText edt) {
+        eye.setOnClickListener(v -> {
+            boolean visible = edt.getInputType()
+                    == (InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+
+            edt.setInputType(visible
+                    ? InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD
+                    : InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+
+            eye.setImageResource(visible
+                    ? R.drawable.ic_eye_closed_dark
+                    : R.drawable.ic_eye_open_dark);
+
+            edt.setSelection(edt.getText().length());
+        });
+    }
+
+    // -----------------------------------------
+    // VALIDACIÓN PASSWORD
+    // -----------------------------------------
+    private void configurarValidacionPassword() {
+        edtPassNueva.addTextChangedListener(new TextWatcher() {
+            public void onTextChanged(CharSequence s, int a, int b, int c) {
+                validarReglas(s.toString());
+            }
+            public void beforeTextChanged(CharSequence s, int a, int b, int c) {}
+            public void afterTextChanged(Editable e) {}
+        });
+    }
+
+    private boolean passwordValida(String p) {
+        return p.length() >= 8 &&
+                p.matches(".*[A-Z].*") &&
+                p.matches(".*[a-z].*") &&
+                p.matches(".*[0-9].*") &&
+                p.matches(".*[@#_$%^&+=!¿?.-].*");
+    }
+
+    private void validarReglas(String p) {
+        rule1.setTextColor(p.length() >= 8 ? 0xFF00E676 : 0xFFFFFFFF);
+        rule2.setTextColor(p.matches(".*[A-Z].*") ? 0xFF00E676 : 0xFFFFFFFF);
+        rule3.setTextColor(p.matches(".*[a-z].*") ? 0xFF00E676 : 0xFFFFFFFF);
+        rule4.setTextColor(p.matches(".*[0-9].*") ? 0xFF00E676 : 0xFFFFFFFF);
+        rule5.setTextColor(p.matches(".*[@#_$%^&+=!¿?.-].*") ? 0xFF00E676 : 0xFFFFFFFF);
+    }
+
+    // -----------------------------------------
+    private void detectarProveedor() {
+        FirebaseUser u = auth.getCurrentUser();
+        if (u == null) return;
+        for (UserInfo i : u.getProviderData())
+            if ("google.com".equals(i.getProviderId())) {
+                esGoogle = true;
+                layoutPassword.setVisibility(View.GONE);
+            }
+    }
+
+    private void cargarDatos() {
+        FirebaseUser u = auth.getCurrentUser();
+        if (u == null) return;
+        txtEmail.setText(u.getEmail());
+
+        db.collection("usuarios").document(u.getUid())
+                .get()
+                .addOnSuccessListener(d ->
+                        edtNombre.setText(d.getString("nombre")));
+    }
+
     private void cerrarSesion() {
         auth.signOut();
         startActivity(new Intent(this, LoginActivity.class));
         finishAffinity();
     }
 
-    // --------------------------------------------------
-    // ELIMINAR CUENTA
-    // --------------------------------------------------
     private void confirmarEliminarCuenta() {
         new AlertDialog.Builder(this)
                 .setTitle("Eliminar cuenta")
                 .setMessage("Esta acción no se puede deshacer")
                 .setPositiveButton("Eliminar", (d, w) -> {
-
-                    FirebaseUser user = auth.getCurrentUser();
-                    if (user == null) return;
-
-                    db.collection("usuarios").document(user.getUid()).delete();
-                    user.delete();
-
+                    FirebaseUser u = auth.getCurrentUser();
+                    if (u == null) return;
+                    db.collection("usuarios").document(u.getUid()).delete();
+                    u.delete();
                     cerrarSesion();
                 })
                 .setNegativeButton("Cancelar", null)
                 .show();
     }
+
+    private void toast(String t) {
+        Toast.makeText(this, t, Toast.LENGTH_SHORT).show();
+    }
+    private void cargarFotoPerfil() {
+        FirebaseUser user = auth.getCurrentUser();
+        if (user == null) return;
+
+        db.collection("usuarios").document(user.getUid())
+                .get()
+                .addOnSuccessListener(doc -> {
+
+                    String fotoFirestore = doc.getString("fotoUrl");
+
+                    // 1️⃣ FOTO SUBIDA POR USUARIO
+                    if (fotoFirestore != null && !fotoFirestore.isEmpty()) {
+                        Glide.with(this)
+                                .load(fotoFirestore)
+                                .circleCrop()
+                                .into(imgPerfil);
+                        return;
+                    }
+
+                    // 2️⃣ FOTO GOOGLE
+                    if (user.getPhotoUrl() != null) {
+                        Glide.with(this)
+                                .load(user.getPhotoUrl())
+                                .circleCrop()
+                                .into(imgPerfil);
+                        return;
+                    }
+
+                    // 3️⃣ DEFAULT
+                    imgPerfil.setImageResource(R.drawable.userlogo);
+                })
+                .addOnFailureListener(e ->
+                        imgPerfil.setImageResource(R.drawable.userlogo)
+                );
+    }
+
 }
+

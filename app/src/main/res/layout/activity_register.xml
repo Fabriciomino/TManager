@@ -119,7 +119,7 @@
                 android:layout_height="wrap_content"
                 android:padding="15dp"
                 android:layout_marginTop="10dp"
-                android:background="#1A1F3D"
+                android:background="@drawable/bg_password_rules"
                 android:orientation="vertical">
 
                 <TextView android:id="@+id/rule1" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="• Mínimo 8 caracteres" android:textColor="#FFFFFF" android:textSize="14sp"/>

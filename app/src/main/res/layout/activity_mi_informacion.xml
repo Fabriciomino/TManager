@@ -19,61 +19,175 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Mi información"
-                android:textColor="#FFFFFF"
                 android:textSize="26sp"
                 android:textStyle="bold"
-                android:layout_marginStart="16dp"
-                android:layout_centerVertical="true"/>
+                android:textColor="#FFFFFF"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="16dp"/>
         </RelativeLayout>
 
         <!-- FOTO PERFIL -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
             android:gravity="center"
+            android:orientation="vertical"
             android:padding="20dp">
 
             <ImageView
                 android:id="@+id/imgPerfil"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:src="@drawable/userlogo"
                 android:background="@drawable/circle_mask"
-                android:scaleType="centerCrop"/>
+                android:scaleType="centerCrop"
+                android:src="@drawable/userlogo"/>
 
             <TextView
                 android:id="@+id/btnCambiarFoto"
-                android:text="Cambiar foto"
-                android:textColor="#6A1B9A"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="Cambiar foto"
+                android:textColor="#6A1B9A"
                 android:layout_marginTop="8dp"/>
         </LinearLayout>
 
-        <!-- DATOS -->
-        <LinearLayout
+        <!-- NOMBRE + TICK -->
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
             android:padding="16dp">
 
             <EditText
                 android:id="@+id/edtNombre"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Nombre / Alias"/>
+                android:hint="Nombre / Alias"
+                android:layout_toStartOf="@id/btnSaveNombre"/>
 
-            <TextView
-                android:id="@+id/txtEmail"
-                android:layout_marginTop="12dp"
-                android:layout_width="wrap_content"
+            <ImageView
+                android:id="@+id/btnSaveNombre"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_check_green"/>
+        </RelativeLayout>
+
+        <!-- EMAIL -->
+        <TextView
+            android:id="@+id/txtEmail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginBottom="10dp"
+            android:textColor="#555"/>
+
+        <!-- PASSWORD -->
+        <LinearLayout
+            android:id="@+id/layoutPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- ACTUAL -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/edtPasswordActual"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Contraseña actual"
+                    android:inputType="textPassword"
+                    android:layout_toStartOf="@id/btnEyeActual"/>
+
+                <ImageView
+                    android:id="@+id/btnEyeActual"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/ic_eye_closed_dark"/>
+            </RelativeLayout>
+
+            <!-- NUEVA -->
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="#555"/>
+                android:layout_marginTop="8dp">
 
+                <EditText
+                    android:id="@+id/edtPasswordNueva"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Nueva contraseña"
+                    android:inputType="textPassword"
+                    android:layout_toStartOf="@id/btnEyeNueva"/>
+
+                <ImageView
+                    android:id="@+id/btnEyeNueva"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/ic_eye_closed_dark"/>
+            </RelativeLayout>
+
+            <!-- CONFIRMAR -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp">
+
+                <EditText
+                    android:id="@+id/edtPasswordConfirmar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Confirmar contraseña"
+                    android:inputType="textPassword"
+                    android:layout_toStartOf="@id/btnSavePassword"/>
+
+                <!-- OJO -->
+                <ImageView
+                    android:id="@+id/btnEyeConfirmar"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="36dp"
+                    android:src="@drawable/ic_eye_closed_dark"/>
+
+                <!-- CHECK -->
+                <ImageView
+                    android:id="@+id/btnSavePassword"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/ic_check_green"/>
+            </RelativeLayout>
+
+
+            <!-- REGLAS -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:padding="15dp"
+                android:background="@drawable/bg_password_rules"
+                android:orientation="vertical">
+
+                <TextView android:id="@+id/rule1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="• Mínimo 8 caracteres" android:textColor="#FFFFFF"/>
+                <TextView android:id="@+id/rule2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="• Una letra mayúscula" android:textColor="#FFFFFF"/>
+                <TextView android:id="@+id/rule3" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="• Una letra minúscula" android:textColor="#FFFFFF"/>
+                <TextView android:id="@+id/rule4" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="• Un número" android:textColor="#FFFFFF"/>
+                <TextView android:id="@+id/rule5" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="• Un símbolo especial" android:textColor="#FFFFFF"/>
+            </LinearLayout>
         </LinearLayout>
 
-        <!-- ACCIONES -->
+        <!-- SESIÓN -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -81,25 +195,19 @@
             android:padding="16dp">
 
             <Button
-                android:id="@+id/btnCambiarPassword"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Cambiar contraseña"/>
-
-            <Button
                 android:id="@+id/btnCerrarSesion"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Cerrar sesión"
-                android:layout_marginTop="8dp"/>
+                android:text="Cerrar sesión"/>
 
             <Button
                 android:id="@+id/btnEliminarCuenta"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Eliminar cuenta"
-                android:textColor="#C62828"
-                android:layout_marginTop="8dp"/>
+                android:layout_marginTop="30dp"
+                android:backgroundTint="#B71C1C"
+                android:textColor="#FFFFFF"/>
         </LinearLayout>
 
     </LinearLayout>

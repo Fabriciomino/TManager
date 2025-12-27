@@ -34,6 +34,11 @@ public class EquipoFragment extends Fragment {
         btnAsistencia.setOnClickListener(view ->
                 startActivity(new Intent(getContext(), RegistroAsistenciaActivity.class))
         );
+        // BOTÓN REGISTRO DE MENSAJES
+        RelativeLayout btnMensajes = v.findViewById(R.id.btnMensajes);
+        btnMensajes.setOnClickListener(view ->
+                startActivity(new Intent(getContext(), MensajesActivity.class))
+        );
 
         // BOTÓN REGISTRO DE ASISTENCIA
         RelativeLayout btnMiembros = v.findViewById(R.id.btnMiembros);
