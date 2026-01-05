@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- HEADER SUPERIOR MORADO -->
     <RelativeLayout
         android:id="@+id/headerPerfil"
         android:layout_width="match_parent"
@@ -26,7 +25,6 @@
     </RelativeLayout>
 
 
-    <!-- CONTENEDOR DE BOTONES -->
     <LinearLayout
         android:id="@+id/layoutBotonesPerfil"
         android:layout_width="match_parent"
@@ -36,7 +34,7 @@
         app:layout_constraintTop_toBottomOf="@id/headerPerfil"
         app:layout_constraintStart_toStartOf="parent">
 
-        <!-- BOTÓN: MI INFORMACIÓN -->
+        <!--  MI INFORMACIÓN -->
         <RelativeLayout
             android:id="@+id/btnMiInformacion"
             android:layout_width="match_parent"
@@ -73,7 +71,7 @@
         </RelativeLayout>
 
 
-        <!-- BOTÓN: DETALLES DE EQUIPO -->
+        <!--  DETALLES DE EQUIPO -->
         <RelativeLayout
             android:id="@+id/btnDetallesEquipo"
             android:layout_width="match_parent"
@@ -81,7 +79,8 @@
             android:background="#FFFFFF"
             android:padding="10dp"
             android:layout_marginBottom="12dp"
-            android:elevation="3dp">
+            android:elevation="3dp"
+            android:visibility="gone">
 
             <ImageView
                 android:id="@+id/iconDetallesEquipo"
@@ -110,7 +109,8 @@
         </RelativeLayout>
 
 
-        <!-- BOTÓN: CENTRO DE AYUDA -->
+
+        <!--  CENTRO DE AYUDA -->
         <RelativeLayout
             android:id="@+id/btnCentroAyuda"
             android:layout_width="match_parent"

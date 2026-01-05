@@ -3,7 +3,6 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <!-- BARRA SUPERIOR -->
     <RelativeLayout
         android:id="@+id/headerEventos"
         android:layout_width="match_parent"
@@ -33,11 +32,12 @@
             android:backgroundTint="#00C853"
             android:src="@android:drawable/ic_input_add"
             app:fabSize="mini"
-            app:tint="@android:color/white" />
+            app:tint="@android:color/white"
+            android:visibility="gone" />
 
-    </RelativeLayout>   <!-- ⬅ AQUÍ SE CIERRA EL HEADER -->
 
-    <!-- RECYCLER VIEW DEBAJO DEL HEADER -->
+    </RelativeLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerEventos"
         android:layout_width="match_parent"

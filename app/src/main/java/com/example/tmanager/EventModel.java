@@ -9,48 +9,35 @@ import java.util.Map;
 
 public class EventModel {
 
-    // ================= IDENTIDAD =================
     private String id;
-
-    // ================= INFO BÁSICA =================
     private String titulo;
     private String fecha;
     private String hora;
     private String lugar;
 
-    // ================= TIPO EVENTO =================
     private Boolean esPartido;
     private Boolean esLocal;
     private Boolean finalizado = false;
 
-    // ================= EQUIPOS =================
     private String miEquipo;
     private String miEquipoLogo;
     private String rival;
     private String rivalEscudoUrl;
-
-    // ================= RESULTADO =================
     private Integer resultadoLocal;
     private Integer resultadoRival;
 
-    // ================= LISTAS =================
     private List<String> convocados = new ArrayList<>();
     private List<Map<String, Object>> goles = new ArrayList<>();
     private List<Map<String, Object>> tarjetas = new ArrayList<>();
 
-    // ================= ASISTENCIAS =================
-    // uid → "si" | "no" | "pendiente"
     private Map<String, String> asistencias = new HashMap<>();
 
-    // Asistencia del usuario actual (NO se guarda en Firestore)
     @Exclude
     private String miAsistencia;
 
-    // ================= CONSTRUCTOR VACÍO (OBLIGATORIO FIRESTORE) =================
     public EventModel() {
     }
 
-    // ================= GETTERS / SETTERS =================
 
     public String getId() {
         return id;
@@ -92,8 +79,6 @@ public class EventModel {
         this.lugar = lugar;
     }
 
-    // ===== Boolean Firestore =====
-
     public Boolean getEsPartido() {
         return esPartido;
     }
@@ -118,7 +103,6 @@ public class EventModel {
         this.finalizado = finalizado;
     }
 
-    // ===== Helpers LÓGICOS (NO Firestore) =====
 
     @Exclude
     public boolean isEsPartido() {
@@ -129,8 +113,6 @@ public class EventModel {
     public boolean isEsLocal() {
         return Boolean.TRUE.equals(esLocal);
     }
-
-    // ================= EQUIPOS =================
 
     public String getMiEquipo() {
         return miEquipo;
@@ -182,8 +164,6 @@ public class EventModel {
         this.resultadoRival = resultadoRival;
     }
 
-    // ================= LISTAS =================
-
     public List<String> getConvocados() {
         return convocados;
     }
@@ -217,8 +197,6 @@ public class EventModel {
     public void setAsistencias(Map<String, String> asistencias) {
         this.asistencias = asistencias != null ? asistencias : new HashMap<>();
     }
-
-    // ================= ASISTENCIA DEL USUARIO =================
 
     @Exclude
     public String getMiAsistencia() {

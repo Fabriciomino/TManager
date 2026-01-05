@@ -19,6 +19,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -47,7 +48,11 @@ public class CrearEquipoActivity extends AppCompatActivity {
             registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
                 if (result.getResultCode() == RESULT_OK && result.getData() != null) {
                     escudoUri = result.getData().getData();
-                    imgEscudo.setImageURI(escudoUri);
+                    Glide.with(this)
+                            .load(escudoUri)
+                            .centerCrop()
+                            .into(imgEscudo);
+
                 }
             });
 
@@ -65,13 +70,8 @@ public class CrearEquipoActivity extends AppCompatActivity {
 
         edtNombreEquipo = findViewById(R.id.edtNombreEquipo);
         imgEscudo = findViewById(R.id.imgEscudo);
-        spinnerDeporte = findViewById(R.id.spinnerDeporte);
         btnCrearEquipo = findViewById(R.id.btnCrearEquipo);
 
-        // Spinner deportes
-        String[] deportes = {"Fútbol", "Fútbol Sala", "Baloncesto", "Balonmano"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, deportes);
-        spinnerDeporte.setAdapter(adapter);
 
         imgEscudo.setOnClickListener(v -> verificarPermisos());
         btnCrearEquipo.setOnClickListener(v -> crearEquipo());
@@ -107,7 +107,6 @@ public class CrearEquipoActivity extends AppCompatActivity {
         }
 
         String nombre = edtNombreEquipo.getText().toString().trim();
-        String deporte = spinnerDeporte.getSelectedItem().toString();
         String uidEntrenador = user.getUid();
 
         if (nombre.isEmpty()) {
@@ -120,10 +119,8 @@ public class CrearEquipoActivity extends AppCompatActivity {
             return;
         }
 
-        // Código único: 6 caracteres
         String codigo = UUID.randomUUID().toString().substring(0, 6).toUpperCase();
 
-        // Ruta segura en Storage
         StorageReference ref = FirebaseStorage.getInstance()
                 .getReference("equipos/" + uidEntrenador + "_" + System.currentTimeMillis() + ".png");
 
@@ -135,7 +132,6 @@ public class CrearEquipoActivity extends AppCompatActivity {
                             // Datos del equipo
                             HashMap<String, Object> equipo = new HashMap<>();
                             equipo.put("nombre", nombre);
-                            equipo.put("deporte", deporte);
                             equipo.put("logoUrl", uri.toString());
                             equipo.put("codigo", codigo);
                             equipo.put("entrenadorUid", uidEntrenador);
@@ -149,7 +145,6 @@ public class CrearEquipoActivity extends AppCompatActivity {
 
                                         String equipoId = documentRef.getId();
 
-                                        // Actualizar usuario
                                         HashMap<String, Object> datosUsuario = new HashMap<>();
                                         datosUsuario.put("rol", "entrenador");
                                         datosUsuario.put("equipoId", equipoId);
@@ -158,12 +153,10 @@ public class CrearEquipoActivity extends AppCompatActivity {
                                                 .update(datosUsuario);
 
                                         Toast.makeText(this, "Equipo creado correctamente", Toast.LENGTH_SHORT).show();
-                                        // 🔥 LIMPIAR CACHÉ DEL EQUIPO ANTERIOR
                                         getSharedPreferences("EQUIPO", MODE_PRIVATE)
                                                 .edit()
                                                 .clear()
                                                 .apply();
-                                        // Ir a MainActivity y borrar historial
                                         Intent intent = new Intent(CrearEquipoActivity.this, MainActivity.class);
                                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                         startActivity(intent);
@@ -176,9 +169,4 @@ public class CrearEquipoActivity extends AppCompatActivity {
                 );
     }
 
-    // BLOQUEAR BOTÓN ATRÁS
-    @Override
-    public void onBackPressed() {
-        // No hacer nada
-    }
 }

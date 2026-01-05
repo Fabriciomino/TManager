@@ -43,7 +43,6 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        // UI
         edtNombre = findViewById(R.id.edtNombre);
         edtEmail = findViewById(R.id.edtEmail);
         edtPassword = findViewById(R.id.edtPassword);
@@ -76,9 +75,8 @@ public class RegisterActivity extends AppCompatActivity {
         btnVerPass2.setOnClickListener(v -> togglePassword(edtPassword2, btnVerPass2, false));
     }
 
-    // ------------------------------------------------------------
+
     // VALIDACIÓN VISUAL DE CONTRASEÑA
-    // ------------------------------------------------------------
     private void configurarPasswordListeners() {
         edtPassword.addTextChangedListener(new TextWatcher() {
             @Override public void beforeTextChanged(CharSequence s, int i, int i1, int i2) {}
@@ -95,9 +93,6 @@ public class RegisterActivity extends AppCompatActivity {
         rule5.setTextColor(pass.matches(".*[@#_$%^&+=!¿?.-].*") ? 0xFF00E676 : 0xFFFFFFFF);
     }
 
-    // ------------------------------------------------------------
-    // MOSTRAR / OCULTAR CONTRASEÑA
-    // ------------------------------------------------------------
     private void togglePassword(EditText editText, ImageView icon, boolean first) {
         boolean visible = first ? passVisible1 : passVisible2;
 
@@ -115,9 +110,6 @@ public class RegisterActivity extends AppCompatActivity {
         else passVisible2 = !passVisible2;
     }
 
-    // ------------------------------------------------------------
-    // GOOGLE SIGN IN
-    // ------------------------------------------------------------
     private void configurarGoogle() {
         GoogleSignInOptions gso =
                 new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -133,9 +125,6 @@ public class RegisterActivity extends AppCompatActivity {
         startActivityForResult(intent, RC_GOOGLE);
     }
 
-    // ------------------------------------------------------------
-    // REGISTRO MANUAL
-    // ------------------------------------------------------------
     private void registrarManual() {
         String nombre = edtNombre.getText().toString().trim();
         String correo = edtEmail.getText().toString().trim();
@@ -162,9 +151,6 @@ public class RegisterActivity extends AppCompatActivity {
                 );
     }
 
-    // ------------------------------------------------------------
-    // GOOGLE RESULT
-    // ------------------------------------------------------------
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -196,9 +182,6 @@ public class RegisterActivity extends AppCompatActivity {
         }
     }
 
-    // ------------------------------------------------------------
-    // GUARDAR EN FIRESTORE
-    // ------------------------------------------------------------
     private void guardarUsuarioEnFirestore(String uid, String nombre, String correo) {
         Map<String, Object> user = new HashMap<>();
         user.put("uid", uid);

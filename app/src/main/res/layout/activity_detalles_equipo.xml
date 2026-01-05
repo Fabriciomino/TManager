@@ -9,7 +9,6 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <!-- HEADER -->
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="80dp"
@@ -61,6 +60,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Guardar cambios"
+                android:background="#EEEEEE"
+                android:textColor="#6A1B9A"
                 android:layout_marginTop="12dp"/>
 
             <Button
@@ -68,8 +69,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Eliminar equipo"
-                android:textColor="#C62828"
-                android:layout_marginTop="16dp"/>
+                android:background="#B71C1C"
+                android:textColor="#FFFFFF"
+                android:layout_marginTop="300dp"/>
         </LinearLayout>
 
     </LinearLayout>

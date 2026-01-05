@@ -21,7 +21,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         String title = "TManager";
         String body = "Tienes una nueva notificación";
 
-        // ✅ LEER DATA MESSAGE (CLAVE)
         if (message.getData() != null && !message.getData().isEmpty()) {
 
             if (message.getData().get("title") != null) {

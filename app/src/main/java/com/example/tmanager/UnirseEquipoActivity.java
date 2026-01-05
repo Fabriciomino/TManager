@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.view.View;
 import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -42,9 +43,37 @@ public class UnirseEquipoActivity extends AppCompatActivity {
         imgFotoJugador = findViewById(R.id.imgFotoJugador);
         btnUnirse = findViewById(R.id.btnUnirse);
 
-        // POSICIONES DEL JUGADOR
         String[] posiciones = {"Delantero", "Mediocentro", "Defensa", "Portero"};
-        spinnerPosicion.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, posiciones));
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+                this,
+                android.R.layout.simple_spinner_item,
+                posiciones
+        ) {
+            @Override
+            public View getView(int position, View convertView, android.view.ViewGroup parent) {
+                // TEXTO SELECCIONADO (BLANCO)
+                TextView tv = (TextView) super.getView(position, convertView, parent);
+                tv.setTextColor(android.graphics.Color.WHITE);
+                tv.setTextSize(16);
+                return tv;
+            }
+
+            @Override
+            public View getDropDownView(int position, View convertView, android.view.ViewGroup parent) {
+                // OPCIONES (GRIS)
+                TextView tv = (TextView) super.getDropDownView(position, convertView, parent);
+                tv.setTextColor(android.graphics.Color.parseColor("#1A0026")); // gris elegante
+                tv.setBackgroundColor(android.graphics.Color.parseColor("#F2F2F2"));
+                tv.setPadding(20, 20, 20, 20);
+                return tv;
+            }
+        };
+
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerPosicion.setAdapter(adapter);
+
+
 
         imgFotoJugador.setOnClickListener(v -> seleccionarFoto());
         btnUnirse.setOnClickListener(v -> intentarUnirse());
@@ -157,13 +186,10 @@ public class UnirseEquipoActivity extends AppCompatActivity {
                             .update(updateUser)
                             .addOnSuccessListener(v -> {
 
-                                // ===============================
-                                // 🔔 NOTIFICACIONES
-                                // ===============================
+                                //  NOTIFICACIONES
 
                                 String entrenadorUid = equipoDoc.getString("entrenadorUid");
 
-                                // 🔔 AL ENTRENADOR
                                 if (entrenadorUid != null && !entrenadorUid.equals(uid)) {
                                     NotificacionUtil.crear(
                                             entrenadorUid,
@@ -171,25 +197,23 @@ public class UnirseEquipoActivity extends AppCompatActivity {
                                             "union_equipo",
                                             "Nuevo jugador",
                                             nombreJugador + " se ha unido al equipo",
-                                            null   // 👈 IMPORTANTE
+                                            null
                                     );
 
                                 }
 
-                                // 🔔 AL JUGADOR
                                 NotificacionUtil.crear(
                                         uid,
                                         equipoId,
                                         "union_ok",
                                         "Bienvenido",
                                         "Te has unido correctamente al equipo",
-                                        null   // 👈 IMPORTANTE
+                                        null
                                 );
 
 
-                                // ===============================
                                 // GUARDAR PREFS Y NAVEGAR
-                                // ===============================
+
                                 getSharedPreferences("EQUIPO", MODE_PRIVATE)
                                         .edit()
                                         .putString("nombre", equipoDoc.getString("nombre"))

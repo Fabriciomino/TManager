@@ -111,9 +111,8 @@ public class MensajesActivity extends AppCompatActivity {
 
                     if (!doc.exists()) return;
 
-                    // =========================
-                    // 🔔 JUGADORES
-                    // =========================
+                    //  JUGADORES
+
                     List<Map<String, Object>> jugadores =
                             (List<Map<String, Object>>) doc.get("jugadores");
 
@@ -123,7 +122,6 @@ public class MensajesActivity extends AppCompatActivity {
                             String uidJugador = (String) j.get("uid");
                             if (uidJugador == null) continue;
 
-                            // ❌ no notificar al emisor
                             if (uidJugador.equals(uid)) continue;
 
                             NotificacionUtil.crear(
@@ -137,9 +135,8 @@ public class MensajesActivity extends AppCompatActivity {
                         }
                     }
 
-                    // =========================
-                    // 🔔 ENTRENADOR
-                    // =========================
+
+                    //  ENTRENADOR
                     String entrenadorUid = doc.getString("entrenadorUid");
 
                     if (entrenadorUid != null && !entrenadorUid.equals(uid)) {

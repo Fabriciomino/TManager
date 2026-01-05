@@ -29,7 +29,7 @@ public class NotificacionUtil {
         data.put("tipo", tipo);
         data.put("titulo", titulo);
         data.put("mensaje", mensaje);
-        data.put("eventoId", eventoId); // 👈 AHORA SÍ
+        data.put("eventoId", eventoId);
         data.put("leida", false);
         data.put("timestamp", new Timestamp(new Date()));
 

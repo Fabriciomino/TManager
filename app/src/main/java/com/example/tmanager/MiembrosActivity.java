@@ -34,7 +34,6 @@ public class MiembrosActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_miembros);
 
-        // Views
         imgEscudoEquipo = findViewById(R.id.imgEscudoEquipo);
         txtNombreEquipo = findViewById(R.id.txtNombreEquipo);
         txtCodigoEquipo = findViewById(R.id.txtCodigoEquipo);
@@ -59,7 +58,6 @@ public class MiembrosActivity extends AppCompatActivity {
 
         String uid = auth.getCurrentUser().getUid();
 
-        // Obtener equipo del usuario
         db.collection("usuarios").document(uid)
                 .get()
                 .addOnSuccessListener(doc -> {
@@ -82,9 +80,7 @@ public class MiembrosActivity extends AppCompatActivity {
                 });
     }
 
-    // =====================================================
-    //          EQUIPO + ENTRENADOR (UNA SOLA LECTURA)
-    // =====================================================
+    //          EQUIPO + ENTRENADOR
     private void cargarEquipoYEntrenador() {
 
         db.collection("equipos").document(equipoId)
@@ -125,9 +121,7 @@ public class MiembrosActivity extends AppCompatActivity {
                 });
     }
 
-    // =====================================================
-    //                  JUGADORES
-    // =====================================================
+
     private void cargarJugadores() {
 
         db.collection("equipos").document(equipoId)

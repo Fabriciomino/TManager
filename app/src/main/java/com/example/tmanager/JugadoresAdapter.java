@@ -43,7 +43,7 @@ public class JugadoresAdapter extends RecyclerView.Adapter<JugadoresAdapter.View
         String posicion = (String) j.get("posicion");
         String foto = (String) j.get("fotoUrl");
 
-        // Texto: Alias #dorsal (pos)
+        //  Alias #dorsal (pos)
         String texto = alias != null ? alias : "Jugador";
 
         if (!dorsal.isEmpty())

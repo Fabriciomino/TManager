@@ -78,11 +78,11 @@ public class EventosFragment extends Fragment {
                         rolUsuario = doc.getString("rol");
                     }
 
-                    if ("jugador".equals(rolUsuario)) {
-                        btnAgregarEvento.setVisibility(View.GONE);
+                    if ("entrenador".equals(rolUsuario)) {
+                        btnAgregarEvento.setVisibility(View.VISIBLE);
                     }
 
-                    // ✅ AHORA SÍ
+
                     cargarInfoEquipo();
                 });
 
@@ -109,9 +109,7 @@ public class EventosFragment extends Fragment {
         if (eventosListener != null) eventosListener.remove();
     }
 
-    // ============================================================
-    //                CARGAR EQUIPO + EVENTOS
-    // ============================================================
+    //            CARGAR EQUIPO + EVENTOS
 
     private void cargarInfoEquipo() {
 
@@ -163,9 +161,6 @@ public class EventosFragment extends Fragment {
                 });
     }
 
-    // ============================================================
-    //               FIRESTORE EVENTOS EN TIEMPO REAL
-    // ============================================================
 
     private void subscribeEventos(String equipoIdFilter) {
 
@@ -196,11 +191,11 @@ public class EventosFragment extends Fragment {
             for (DocumentSnapshot ds : snap.getDocuments()) {
 
                 Boolean finalizado = ds.getBoolean("finalizado");
+                Boolean resultadoEliminado = ds.getBoolean("resultadoEliminado");
 
-                // ❌ NO mostrar eventos finalizados
-                if (Boolean.TRUE.equals(finalizado)) {
-                    continue;
-                }
+                if (Boolean.TRUE.equals(finalizado)) continue;
+                if (Boolean.TRUE.equals(resultadoEliminado)) continue;
+
 
                 List<String> conv = (List<String>) ds.get("convocados");
 
@@ -218,7 +213,6 @@ public class EventosFragment extends Fragment {
                 ev.setLugar(ds.getString("lugar"));
                 ev.setEsPartido(Boolean.TRUE.equals(ds.getBoolean("esPartido")));
 
-                // 🔴 ESTO ES LO QUE FALTABA
                 ev.setMiEquipo(ds.getString("miEquipo"));
                 ev.setMiEquipoLogo(ds.getString("miEquipoLogo"));
                 ev.setRival(ds.getString("rival"));
@@ -247,9 +241,8 @@ public class EventosFragment extends Fragment {
         });
     }
 
-    // ============================================================
-    //               MENÚ DE OPCIONES
-    // ============================================================
+
+    //         MENÚ DE OPCIONES
 
     private void mostrarOpcionesEvento(int pos) {
 
@@ -294,9 +287,7 @@ public class EventosFragment extends Fragment {
                 .show();
     }
 
-    // ============================================================
-    //              DIÁLOGO CREAR / EDITAR EVENTOS
-    // ============================================================
+    //        DIÁLOGO CREAR
 
     private void mostrarDialogo(int posEditing) {
 
@@ -394,9 +385,8 @@ public class EventosFragment extends Fragment {
 
         builder.show();
     }
-    // ============================================================
-    //                  GUARDAR EVENTO (con convocatoria)
-    // ============================================================
+
+    //             GUARDAR EVENTO
     private void guardarEvento(EventModel editEvent,
                                EditText edtTitulo, EditText edtFecha, EditText edtHora, EditText edtLugar,
                                EditText edtRival, Spinner spnTipo, Spinner spnLocal,
@@ -420,9 +410,9 @@ public class EventosFragment extends Fragment {
             return;
         }
 
-        // ========================================
+
         // TOMAR CONVOCADOS ANTES DE GUARDAR
-        // ========================================
+
         List<String> convocados = new ArrayList<>();
         for (int i = 0; i < containerConvocados.getChildCount(); i++) {
             View item = containerConvocados.getChildAt(i);
@@ -432,9 +422,6 @@ public class EventosFragment extends Fragment {
             }
         }
 
-        // ========================================
-        // SI SUBE NUEVO ESCUDO, PRIMERO STORAGE
-        // ========================================
         if (escudoUriSeleccionada != null && !escudoUriSeleccionada.toString().startsWith("http")) {
             uploadRivalLogoThenSave(fechaHora, editEvent, titulo, fecha, hora, lugar,
                     esPartido, rival, esLocal, convocados);
@@ -447,9 +434,7 @@ public class EventosFragment extends Fragment {
                 convocados);
     }
 
-    // ============================================================
-    //      SUBIR FOTO RIVAL Y LUEGO GUARDAR EVENTO COMPLETO
-    // ============================================================
+    //      SUBIR FOTO RIVAL Y LUEGO GUARDAR EVENTO
     private void uploadRivalLogoThenSave(Date fechaHora, EventModel editEvent,
                                          String titulo, String fecha, String hora, String lugar,
                                          boolean esPartido, String rival, boolean esLocal,
@@ -467,9 +452,8 @@ public class EventosFragment extends Fragment {
                         Toast.makeText(getContext(), "Error subiendo imagen", Toast.LENGTH_SHORT).show());
     }
 
-    // ============================================================
+
     //          GUARDAR EVENTO + CONVOCATORIA EN FIRESTORE
-    // ============================================================
     private void saveEventToFirestore(Date fechaHora, EventModel editEvent,
                                       String titulo, String fecha, String hora, String lugar,
                                       boolean esPartido, String rival, boolean esLocal,
@@ -513,9 +497,9 @@ public class EventosFragment extends Fragment {
 
                         Toast.makeText(getContext(), "Evento creado", Toast.LENGTH_SHORT).show();
 
-                        // ===============================
-                        // 🔔 NOTIFICAR CONVOCADOS
-                        // ===============================
+
+                        //  NOTIFICAR CONVOCADOS
+
                         if (convocados != null && !convocados.isEmpty()) {
 
                             String tituloNotif = esPartido
@@ -558,9 +542,9 @@ public class EventosFragment extends Fragment {
         escudoUriSeleccionada = null;
     }
 
-    // ============================================================
+
     //              CONVOCATORIA — CARGAR LISTA
-    // ============================================================
+
     private void llenarJugadoresConvocatoria(LinearLayout container, @Nullable List<String> pre) {
 
         container.removeAllViews();
@@ -603,9 +587,8 @@ public class EventosFragment extends Fragment {
                     }
                 });
     }
-    // ============================================================
-    //            PICKERS DE FECHA Y HORA
-    // ============================================================
+    //             FECHA Y HORA
+
     private void mostrarCalendario() {
         Calendar c = Calendar.getInstance();
         new DatePickerDialog(
@@ -630,9 +613,8 @@ public class EventosFragment extends Fragment {
         ).show();
     }
 
-    // ============================================================
-    //              DIALOGO RESULTADO (GOLES Y TARJETAS)
-    // ============================================================
+
+    //              DIALOGO RESULTADO
     private void mostrarDialogoResultado(EventModel ev) {
 
         if (ev == null) return;
@@ -651,7 +633,6 @@ public class EventosFragment extends Fragment {
                         uidToAlias.put(uid, (String) j.get("alias"));
                     }
 
-                    // FILTRAR SOLO CONVOCADOS
                     List<String> convUids = new ArrayList<>();
                     List<String> convNames = new ArrayList<>();
                     if (ev.getConvocados() != null) {
@@ -806,9 +787,7 @@ public class EventosFragment extends Fragment {
                 });
     }
 
-    // ============================================================
     //       FILA DE GOL
-    // ============================================================
     private ArrayAdapter<String> smallAdapter(List<String> items) {
         ArrayAdapter<String> ad = new ArrayAdapter<>(getContext(),
                 android.R.layout.simple_spinner_item, items);
@@ -850,9 +829,7 @@ public class EventosFragment extends Fragment {
         return row;
     }
 
-    // ============================================================
     //        FILA TARJETA
-    // ============================================================
     private View createTarjetaItemView(List<String> convUids, List<String> convNames) {
 
         LinearLayout row = new LinearLayout(getContext());
@@ -885,9 +862,8 @@ public class EventosFragment extends Fragment {
         return row;
     }
 
-    // ============================================================
+
     //       GUARDAR RESULTADO EN FIRESTORE
-    // ============================================================
     private void saveResultadoEnFirestore(EventModel ev,
                                           Integer golesLocal,
                                           Integer golesRival,
@@ -901,6 +877,8 @@ public class EventosFragment extends Fragment {
         data.put("goles", goles);
         data.put("tarjetas", tarjetas);
         data.put("finalizado", true);
+        data.put("resultadoEliminado", false);
+
 
 
         db.collection("eventos").document(ev.getId())
@@ -913,9 +891,8 @@ public class EventosFragment extends Fragment {
                         Toast.makeText(getContext(), "Error guardando resultado", Toast.LENGTH_SHORT).show());
     }
 
-    // ============================================================
     // FOTO RIVAL
-    // ============================================================
+
     @Override
     public void onActivityResult(int req, int res, @Nullable Intent data) {
         super.onActivityResult(req, res, data);
@@ -928,7 +905,7 @@ public class EventosFragment extends Fragment {
     }
     private void mostrarDialogoAsistencia(EventModel ev) {
 
-        String estadoActual = ev.getMiAsistencia(); // "si", "no" o null
+        String estadoActual = ev.getMiAsistencia();
         List<String> opciones = new ArrayList<>();
 
         if (estadoActual == null) {
@@ -973,14 +950,13 @@ public class EventosFragment extends Fragment {
                                             if (nombreJugador == null)
                                                 nombreJugador = "Un jugador";
 
-                                            // 🔔 NOTIFICACIÓN CORRECTA
                                             NotificacionUtil.crear(
                                                     entrenadorUid,
                                                     equipoId,
                                                     "asistencia",
                                                     "Asistencia confirmada",
                                                     nombreJugador + " ha confirmado su asistencia",
-                                                    null   // 👈 CLAVE
+                                                    null
                                             );
                                         });
                             });

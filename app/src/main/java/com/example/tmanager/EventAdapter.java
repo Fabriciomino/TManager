@@ -95,7 +95,6 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
 
 
 // INDICADOR DE ASISTENCIA
-// =========================
         String asistencia = evento.getMiAsistencia();
 
         holder.asistencia.setVisibility(View.GONE);

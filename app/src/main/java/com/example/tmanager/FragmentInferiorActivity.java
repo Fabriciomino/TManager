@@ -27,7 +27,6 @@ public class FragmentInferiorActivity extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_inferior, container, false);
 
-        // Vincular botones e iconos
         btnEventos = view.findViewById(R.id.btnEventos);
         btnEquipo = view.findViewById(R.id.btnEquipo);
         btnPerfil = view.findViewById(R.id.btnPerfil);
@@ -40,10 +39,9 @@ public class FragmentInferiorActivity extends Fragment {
         txtEquipo = btnEquipo.findViewById(R.id.txtEquipo);
         txtPerfil = btnPerfil.findViewById(R.id.txtPerfil);
 
-        // Detectar actividad actual para marcar botón seleccionado
         String currentActivity = getActivity().getClass().getSimpleName();
 
-        resetButtons(); // primero poner todos deseleccionados
+        resetButtons();
 
         switch (currentActivity) {
             case "EventosActivity":
@@ -57,7 +55,6 @@ public class FragmentInferiorActivity extends Fragment {
                 break;
         }
 
-        // Click listeners
         btnEventos.setOnClickListener(v -> {
             if (!currentActivity.equals("EventosActivity")) {
                 startActivity(new Intent(getActivity(), EventosFragment.class));
@@ -82,10 +79,9 @@ public class FragmentInferiorActivity extends Fragment {
         return view;
     }
 
-    // Función para resetear colores a no seleccionados
     private void resetButtons() {
         // Colores por defecto
-        int colorDefault = 0xFF0D0D0D; // negro oscuro
+        int colorDefault = 0xFF0D0D0D;
 
         txtEventos.setTextColor(colorDefault);
         txtEquipo.setTextColor(colorDefault);
@@ -96,9 +92,8 @@ public class FragmentInferiorActivity extends Fragment {
         iconPerfil.setAlpha(0.5f);
     }
 
-    // Función para seleccionar un botón
     private void selectButton(LinearLayout btn, ImageView icon, TextView txt) {
-        txt.setTextColor(0xFF3F51B5); // color azul
+        txt.setTextColor(0xFF3F51B5);
         icon.setAlpha(1f);
     }
 }

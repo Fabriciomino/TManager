@@ -51,13 +51,11 @@ public class FragmentSuperiorActivity extends Fragment {
             startActivity(new Intent(getContext(), NotificacionesActivity.class));
         });
 
-        return view; // ✅ SIEMPRE AL FINAL
+        return view;
     }
 
 
-    // --------------------------------------------------------
-    // FOTO DEL PERFIL (Google o icono por defecto)
-    // --------------------------------------------------------
+    // FOTO DEL PERFIL
     private void cargarFotoUsuario() {
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -65,7 +63,6 @@ public class FragmentSuperiorActivity extends Fragment {
 
         String uid = user.getUid();
 
-        // 1️⃣ INTENTAR FOTO GUARDADA EN FIRESTORE
         db.collection("usuarios").document(uid)
                 .get()
                 .addOnSuccessListener(doc -> {
@@ -82,14 +79,12 @@ public class FragmentSuperiorActivity extends Fragment {
                         }
                     }
 
-                    // 2️⃣ SI NO HAY → FOTO DE GOOGLE
                     if (user.getPhotoUrl() != null) {
                         Glide.with(requireContext())
                                 .load(user.getPhotoUrl())
                                 .circleCrop()
                                 .into(imgPerfil);
                     } else {
-                        // 3️⃣ SI NO HAY NADA → ICONO
                         imgPerfil.setImageResource(R.drawable.userlogo);
                     }
                 })
@@ -98,13 +93,9 @@ public class FragmentSuperiorActivity extends Fragment {
                 );
     }
 
-
-    // --------------------------------------------------------
     // CARGAR NOMBRE Y LOGO DEL EQUIPO
-    // --------------------------------------------------------
     private void cargarDatosEquipo() {
 
-        // 1️⃣ Comprobar SharedPreferences (más rápido)
         String nombreLocal = requireActivity().getSharedPreferences("EQUIPO", getContext().MODE_PRIVATE)
                 .getString("nombre", null);
         String logoLocal = requireActivity().getSharedPreferences("EQUIPO", getContext().MODE_PRIVATE)
@@ -121,7 +112,6 @@ public class FragmentSuperiorActivity extends Fragment {
                     .into(imgLogo);
         }
 
-        // 2️⃣ Comprobar Firestore si no está en preferencias
         String uid = FirebaseAuth.getInstance().getCurrentUser() != null
                 ? FirebaseAuth.getInstance().getCurrentUser().getUid()
                 : null;
@@ -143,7 +133,6 @@ public class FragmentSuperiorActivity extends Fragment {
                 String logo = equipo.getString("logoUrl");
 
                 if (nombre != null) {
-                    // Limitar el nombre a máximo 15 caracteres
                     if (nombre.length() > 15) {
                         nombre = nombre.substring(0, 15) + "…";
                     }
@@ -190,6 +179,4 @@ public class FragmentSuperiorActivity extends Fragment {
         cargarFotoUsuario();
         escucharNotificaciones();
     }
-
-
 }

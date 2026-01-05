@@ -52,32 +52,28 @@
 
         <ImageView
             android:id="@+id/imgEscudo"
-            android:src="@android:drawable/ic_menu_camera"
             android:layout_width="130dp"
             android:layout_height="130dp"
             android:layout_marginTop="15dp"
-            android:background="#33000000"
-            android:padding="20dp"
-            android:layout_gravity="center"/>
+            android:layout_gravity="center"
+            android:background="@drawable/circle_mask"
+            android:src="@android:drawable/ic_menu_camera"
+            android:scaleType="centerCrop"
+            android:clipToOutline="true"/>
+
 
         <TextView
-            android:text="Selecciona el deporte:"
-            android:textColor="#FFFFFF"
-            android:textSize="16sp"
-            android:layout_marginTop="25dp"
-            android:layout_marginBottom="8dp"
+            android:id="@+id/txtSeleccionarFoto"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-        <Spinner
-            android:id="@+id/spinnerDeporte"
-            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:background="#FFFFFF"
-            android:layout_marginBottom="40dp"/>
+            android:layout_gravity="center"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="20dp"
+            android:text="Toca para seleccionar foto"
+            android:textColor="#BBBBBB"
+            android:textSize="12sp"/>
 
-        <!-- Botón crear equipo -->
+
         <Button
             android:id="@+id/btnCrearEquipo"
             android:layout_width="match_parent"
@@ -87,7 +83,7 @@
             android:textStyle="bold"
             android:background="#00E676"
             android:textSize="18sp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="30dp"
             android:layout_marginBottom="50dp"/>
 
     </LinearLayout>

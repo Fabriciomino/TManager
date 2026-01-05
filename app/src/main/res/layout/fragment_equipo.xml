@@ -33,7 +33,7 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <!-- BOTÓN 1: RESULTADOS -->
+        <!--  RESULTADOS -->
         <RelativeLayout
             android:id="@+id/btnResultados"
             android:layout_width="match_parent"
@@ -52,7 +52,6 @@
                 android:layout_marginStart="10dp"
                 android:src="@drawable/usermenu" />
 
-            <!-- TEXTO DEL BOTÓN -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -62,7 +61,6 @@
                 android:layout_centerVertical="true"
                 android:layout_marginStart="60dp" />
 
-            <!-- FLECHA DERECHA -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -73,7 +71,7 @@
                 android:layout_marginEnd="16dp" />
         </RelativeLayout>
 
-        <!-- BOTÓN 2: ESTADÍSTICAS -->
+        <!-- ESTADÍSTICAS -->
         <RelativeLayout
             android:id="@+id/btnEstadisticas"
             android:layout_width="match_parent"
@@ -111,7 +109,7 @@
                 android:layout_marginEnd="16dp" />
         </RelativeLayout>
 
-        <!-- BOTÓN 3: REGISTRO DE ASISTENCIA -->
+        <!-- REGISTRO DE ASISTENCIA -->
         <RelativeLayout
             android:id="@+id/btnAsistencia"
             android:layout_width="match_parent"
@@ -149,8 +147,9 @@
                 android:layout_marginEnd="16dp" />
         </RelativeLayout>
 
-        <!-- BOTÓN 4: ALINEACIÓN -->
+        <!-- ALINEACIÓN -->
         <RelativeLayout
+            android:id="@+id/btnAlineacion"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:background="#FFFFFF"
@@ -185,7 +184,7 @@
                 android:layout_marginEnd="16dp" />
         </RelativeLayout>
 
-        <!-- BOTÓN 5: MENSAJES -->
+        <!-- MENSAJES -->
         <RelativeLayout
             android:id="@+id/btnMensajes"
             android:layout_width="match_parent"
@@ -222,7 +221,8 @@
                 android:layout_alignParentEnd="true"
                 android:layout_marginEnd="16dp" />
         </RelativeLayout>
-        <!-- BOTÓN 5: MENSAJES -->
+
+        <!-- MIEMBROS -->
         <RelativeLayout
             android:id="@+id/btnMiembros"
             android:layout_width="match_parent"

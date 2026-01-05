@@ -23,10 +23,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // 🔔 PEDIR PERMISO NOTIFICACIONES (ANDROID 13+)
         pedirPermisoNotificaciones();
 
-        // 🔔 GUARDAR TOKEN FCM
+        //  GUARDAR TOKEN FCM
         FCMUtil.guardarToken();
 
         fragmentManager = getSupportFragmentManager();
@@ -66,9 +65,7 @@ public class MainActivity extends AppCompatActivity {
                 .commit();
     }
 
-    // =====================================================
-    // 🔔 PERMISO NOTIFICACIONES ANDROID 13+
-    // =====================================================
+    // PERMISO NOTIFICACIONES ANDROID
     private void pedirPermisoNotificaciones() {
 
         if (Build.VERSION.SDK_INT >= 33) {

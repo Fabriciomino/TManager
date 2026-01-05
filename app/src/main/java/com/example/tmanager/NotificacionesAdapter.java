@@ -53,7 +53,7 @@ public class NotificacionesAdapter
         h.txtMensaje.setText(n.mensaje);
         h.txtFecha.setText(formatearFecha(n.timestamp));
 
-        // 🎨 COLOR SEGÚN LEÍDA / NO LEÍDA
+        //  COLOR LEÍDA / NO LEIDA
         if (n.leida) {
             h.layout.setBackgroundColor(
                     context.getResources().getColor(R.color.notif_leida)
@@ -92,9 +92,7 @@ public class NotificacionesAdapter
     }
 
 
-    // ----------------------------------------
-    // FECHA RELATIVA
-    // ----------------------------------------
+    // FECHA
     private String formatearFecha(Timestamp ts) {
 
         if (ts == null) return "";

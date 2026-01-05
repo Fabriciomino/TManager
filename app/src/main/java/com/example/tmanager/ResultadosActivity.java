@@ -5,9 +5,11 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.*;
 
 import java.util.ArrayList;
@@ -25,11 +27,32 @@ public class ResultadosActivity extends AppCompatActivity {
     private ResultadosAdapter adapter;
     private List<EventModel> partidos = new ArrayList<>();
 
-    private String equipoId; // 👈 CLAVE
+    private String equipoId;
     private Map<String, String> uidToAlias = new HashMap<>();
+
+    private String rolUsuario = "jugador";
+    private String uidActual;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        uidActual = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        FirebaseFirestore.getInstance()
+                .collection("usuarios")
+                .document(uidActual)
+                .get()
+                .addOnSuccessListener(doc -> {
+
+                    if (!doc.exists()) return;
+
+                    rolUsuario = doc.getString("rol");
+
+                    if ("entrenador".equals(rolUsuario)) {
+                        activarSwipeEliminar();
+                    }
+                });
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_resultados);
 
@@ -45,7 +68,6 @@ public class ResultadosActivity extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
 
-        // 🔥 EXACTAMENTE IGUAL QUE EN EVENTOSFRAGMENT
         var prefs = getSharedPreferences("EQUIPO", MODE_PRIVATE);
         equipoId = prefs.getString("equipoId", null);
 
@@ -53,9 +75,7 @@ public class ResultadosActivity extends AppCompatActivity {
         cargarResultados();
     }
 
-    // =====================================================
-    //      CARGAR ALIAS (IGUAL QUE EVENTOSFRAGMENT)
-    // =====================================================
+
     private void cargarAliasJugadores() {
 
         if (equipoId == null) return;
@@ -84,9 +104,7 @@ public class ResultadosActivity extends AppCompatActivity {
                 });
     }
 
-    // =====================================================
-    //                CARGAR RESULTADOS
-    // =====================================================
+
     private void cargarResultados() {
 
         if (equipoId == null) return;
@@ -134,4 +152,39 @@ public class ResultadosActivity extends AppCompatActivity {
                     adapter.notifyDataSetChanged();
                 });
     }
+    private void activarSwipeEliminar() {
+
+        ItemTouchHelper.SimpleCallback callback =
+                new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+
+                    @Override
+                    public boolean onMove(RecyclerView rv,
+                                          RecyclerView.ViewHolder vh,
+                                          RecyclerView.ViewHolder target) {
+                        return false;
+                    }
+
+                    @Override
+                    public void onSwiped(RecyclerView.ViewHolder vh, int direction) {
+
+                        int pos = vh.getAdapterPosition();
+                        EventModel ev = partidos.get(pos);
+
+                        // Eliminar SOLO el resultado (no el evento)
+                        FirebaseFirestore.getInstance()
+                                .collection("eventos")
+                                .document(ev.getId())
+                                .update(
+                                        "resultadoLocal", FieldValue.delete(),
+                                        "resultadoRival", FieldValue.delete(),
+                                        "finalizado", false,
+                                        "resultadoEliminado", true
+                                );
+
+                    }
+                };
+
+        new ItemTouchHelper(callback).attachToRecyclerView(recycler);
+    }
+
 }

@@ -15,7 +15,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- Contenedor para los fragmentos principales -->
     <FrameLayout
         android:id="@+id/fragmentContainer"
         android:layout_width="match_parent"

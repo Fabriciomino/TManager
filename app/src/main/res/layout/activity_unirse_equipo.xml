@@ -59,7 +59,7 @@
             android:textColorHint="#AAFFFFFF"
             android:background="@android:color/transparent"
             android:padding="10dp"
-            android:layout_marginBottom="18dp"
+            android:layout_marginBottom="0dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
@@ -91,9 +91,19 @@
             android:textColorHint="#AAFFFFFF"
             android:padding="10dp"
             android:background="@android:color/transparent"
-            android:layout_marginBottom="20dp"
+            android:layout_marginBottom="30dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
+
+        <!-- POSICIÓN -->
+        <TextView
+            android:text="Selecciona tu posición"
+            android:textColor="#CCCCCC"
+            android:textSize="18sp"
+            android:layout_marginBottom="12dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
 
         <!-- SPINNER POSICION -->
         <Spinner
@@ -102,7 +112,7 @@
             android:layout_height="wrap_content"
             android:popupBackground="#FFFFFF"
             android:padding="10dp"
-            android:layout_marginBottom="25dp"/>
+            android:layout_marginBottom="30dp"/>
 
 
         <!-- BOTÓN UNIRSE -->

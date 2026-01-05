@@ -26,20 +26,17 @@ public class MiPerfilFragment extends Fragment {
 
         View v = inflater.inflate(R.layout.fragment_mi_perfil, container, false);
 
-        // 🔗 VINCULAR VISTAS
         btnMiInformacion = v.findViewById(R.id.btnMiInformacion);
         btnDetallesEquipo = v.findViewById(R.id.btnDetallesEquipo);
         btnCentroAyuda = v.findViewById(R.id.btnCentroAyuda);
 
-        // 🔐 COMPROBAR ROL DEL USUARIO
+        //  COMPROBAR ROL DEL USUARIO
         comprobarRolUsuario();
 
-        // 👉 CLICK MI INFORMACIÓN
         btnMiInformacion.setOnClickListener(view ->
                 startActivity(new Intent(getContext(), MiInformacionActivity.class))
         );
 
-        // 👉 CLICK DETALLES DE EQUIPO (solo entrenador)
         btnDetallesEquipo.setOnClickListener(view ->
                 startActivity(new Intent(getContext(), DetallesEquipoActivity.class))
         );
@@ -47,9 +44,7 @@ public class MiPerfilFragment extends Fragment {
         return v;
     }
 
-    // =========================================================
     //   COMPROBAR ROL Y OCULTAR BOTÓN SI ES JUGADOR
-    // =========================================================
     private void comprobarRolUsuario() {
 
         if (FirebaseAuth.getInstance().getCurrentUser() == null) return;
@@ -66,10 +61,11 @@ public class MiPerfilFragment extends Fragment {
 
                     String rol = doc.getString("rol");
 
-                    // 👤 JUGADOR → NO VE DETALLES DE EQUIPO
-                    if ("jugador".equals(rol)) {
-                        btnDetallesEquipo.setVisibility(View.GONE);
+                    //  JUGADOR NO VE DETALLES DE EQUIPO
+                    if ("entrenador".equals(rol)) {
+                        btnDetallesEquipo.setVisibility(View.VISIBLE);
                     }
+
                 });
     }
 }

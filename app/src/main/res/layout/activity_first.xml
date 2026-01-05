@@ -5,7 +5,6 @@
     android:background="#1A0026"
     android:padding="32dp">
 
-    <!-- CONTENIDO CENTRAL -->
     <LinearLayout
         android:id="@+id/centerContent"
         android:layout_width="match_parent"
@@ -35,7 +34,6 @@
             android:gravity="center"/>
     </LinearLayout>
 
-    <!-- BOTONES ABAJO DEL TODO -->
     <LinearLayout
         android:id="@+id/bottomButtons"
         android:layout_width="match_parent"
@@ -45,7 +43,6 @@
         android:layout_alignParentBottom="true"
         android:paddingBottom="20dp">
 
-        <!-- INICIAR SESIÓN -->
         <TextView
             android:id="@+id/txtIniciar"
             android:layout_width="wrap_content"
@@ -58,7 +55,6 @@
             android:clickable="true"
             android:focusable="true"/>
 
-        <!-- LINEA CON PREGUNTA + REGISTRAR -->
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

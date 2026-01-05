@@ -5,7 +5,6 @@
     android:layout_height="match_parent"
     android:background="#F2F2F2">
 
-    <!-- HEADER SUPERIOR -->
     <RelativeLayout
         android:id="@+id/headerResultados"
         android:layout_width="match_parent"
@@ -60,7 +59,6 @@
                 android:textColor="#777777"
                 android:layout_marginBottom="16dp" />
 
-            <!-- FILA VICTORIAS / EMPATES / DERROTAS -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

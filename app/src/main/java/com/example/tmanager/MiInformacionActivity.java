@@ -130,29 +130,29 @@ public class MiInformacionActivity extends AppCompatActivity {
 
             ref.putFile(fotoUri)
                     .addOnSuccessListener(task ->
-                            ref.getDownloadUrl().addOnSuccessListener(url -> {
+                                    ref.getDownloadUrl().addOnSuccessListener(url -> {
 
-                                String fotoNueva = url.toString();
+                                        String fotoNueva = url.toString();
 
 // 1️⃣ GUARDAR EN FIRESTORE
-                                db.collection("usuarios")
-                                        .document(user.getUid())
-                                        .update("fotoUrl", fotoNueva);
+                                        db.collection("usuarios")
+                                                .document(user.getUid())
+                                                .update("fotoUrl", fotoNueva);
 
 // 2️⃣ ACTUALIZAR FIREBASE AUTH (CLAVE 🔥)
-                                UserProfileChangeRequest profileUpdates =
-                                        new UserProfileChangeRequest.Builder()
-                                                .setPhotoUri(Uri.parse(fotoNueva))
-                                                .build();
+                                        UserProfileChangeRequest profileUpdates =
+                                                new UserProfileChangeRequest.Builder()
+                                                        .setPhotoUri(Uri.parse(fotoNueva))
+                                                        .build();
 
-                                user.updateProfile(profileUpdates)
-                                        .addOnSuccessListener(a ->
-                                                Toast.makeText(this,
-                                                        "Foto de perfil actualizada",
-                                                        Toast.LENGTH_SHORT).show()
-                                        );
+                                        user.updateProfile(profileUpdates)
+                                                .addOnSuccessListener(a ->
+                                                        Toast.makeText(this,
+                                                                "Foto de perfil actualizada",
+                                                                Toast.LENGTH_SHORT).show()
+                                                );
 
-                            })
+                                    })
                     )
                     .addOnFailureListener(e ->
                             Toast.makeText(this,
@@ -370,4 +370,3 @@ public class MiInformacionActivity extends AppCompatActivity {
     }
 
 }
-

@@ -14,14 +14,11 @@ public class FirstActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // 🔑 COMPROBAR SESIÓN ANTES DE MOSTRAR NADA
         if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-            // ✅ SESIÓN INICIADA → IR A EVENTOS
             irAMainEventos();
-            return; // ⛔ no cargar layout
+            return;
         }
 
-        // ❌ NO HAY SESIÓN → MOSTRAR FIRST
         setContentView(R.layout.activity_first);
 
         TextView iniciar = findViewById(R.id.txtIniciar);

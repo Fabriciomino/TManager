@@ -27,7 +27,6 @@
                 android:paddingBottom="40dp"
                 android:layout_gravity="center" />
 
-            <!-- Nombre -->
             <EditText
                 android:id="@+id/edtNombre"
                 android:layout_width="match_parent"
@@ -40,7 +39,6 @@
 
             <View android:layout_width="match_parent" android:layout_height="2dp" android:background="#FFFFFF" />
 
-            <!-- Email -->
             <EditText
                 android:id="@+id/edtEmail"
                 android:layout_width="match_parent"
@@ -55,7 +53,6 @@
 
             <View android:layout_width="match_parent" android:layout_height="2dp" android:background="#FFFFFF" />
 
-            <!-- CONTRASEÑA -->
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

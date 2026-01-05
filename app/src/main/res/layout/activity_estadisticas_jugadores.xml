@@ -5,7 +5,6 @@
     android:orientation="vertical"
     android:background="#F5F5F5">
 
-    <!-- HEADER MORADO -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="80dp"
@@ -23,7 +22,6 @@
             android:textColor="#FFFFFF" />
     </LinearLayout>
 
-    <!-- CABECERA TABLA -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -68,7 +66,6 @@
             android:text="🟥"
             android:gravity="center" />
 
-        <!-- PARTIDOS JUGADOS -->
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -76,7 +73,6 @@
             android:text="PJ"
             android:gravity="center" />
 
-        <!-- GOLES POR PARTIDO -->
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -85,7 +81,6 @@
             android:gravity="center" />
     </LinearLayout>
 
-    <!-- LISTA -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerStats"
         android:layout_width="match_parent"

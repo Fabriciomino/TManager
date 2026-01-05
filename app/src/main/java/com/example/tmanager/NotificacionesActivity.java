@@ -34,7 +34,6 @@ public class NotificacionesActivity extends AppCompatActivity {
         adapter = new NotificacionesAdapter(this, lista);
         recycler.setAdapter(adapter);
 
-        // 🔔 CLICK EN NOTIFICACIÓN
         adapter.setOnNotificacionClickListener(this::onNotificacionClick);
 
         db = FirebaseFirestore.getInstance();
@@ -43,9 +42,6 @@ public class NotificacionesActivity extends AppCompatActivity {
 
     }
 
-    // =====================================================
-    //        CARGAR NOTIFICACIONES DEL USUARIO
-    // =====================================================
     private void cargarNotificaciones() {
 
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -72,9 +68,6 @@ public class NotificacionesActivity extends AppCompatActivity {
     }
 
 
-    // =====================================================
-    //        CLICK EN UNA NOTIFICACIÓN
-    // =====================================================
     private void onNotificacionClick(NotificacionModel n) {
 
         Intent i;
