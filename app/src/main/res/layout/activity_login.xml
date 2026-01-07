@@ -81,7 +81,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="¿No tienes cuenta? Regístrate"
-            android:textColor="#00E676"
+            android:textColor="@color/login_selector"
             android:textSize="16sp"
             android:layout_marginTop="25dp" />
 
@@ -89,15 +89,15 @@
 
     <Button
         android:id="@+id/btnEntrar"
-        android:layout_width="wrap_content"
+        android:layout_width="333dp"
         android:layout_height="wrap_content"
-        android:text="Entrar"
-        android:textSize="20sp"
-        android:textColor="#1A0026"
-        android:textStyle="bold"
-        android:background="#00E676"
-        android:padding="15dp"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/btn_verde_selector"
+        android:padding="15dp"
+        android:text="Entrar"
+        android:textColor="#1A0026"
+        android:textSize="18sp"
+        android:textStyle="bold" />
 
 </RelativeLayout>

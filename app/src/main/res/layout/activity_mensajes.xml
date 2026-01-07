@@ -2,6 +2,36 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:background="#1A0026"
+        android:padding="10dp">
+
+        <ImageView
+            android:id="@+id/imgLogoEquipo"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:scaleType="centerCrop"
+            android:background="@drawable/circle_mask"
+            android:padding="2dp"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"/>
+
+        <TextView
+            android:id="@+id/txtNombreEquipo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Equipo"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_toEndOf="@id/imgLogoEquipo"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
+            android:maxLines="1"
+            android:ellipsize="end"/>
+    </RelativeLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerMensajes"

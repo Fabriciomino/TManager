@@ -173,6 +173,25 @@ public class UnirseEquipoActivity extends AppCompatActivity {
 
         db.collection("equipos").document(equipoId)
                 .update("jugadores", FieldValue.arrayUnion(jugadorData))
+                .addOnFailureListener(e ->
+                        Toast.makeText(this, "Error al unirse al equipo", Toast.LENGTH_SHORT).show()
+                );
+
+        Map<String, Object> miembro = new HashMap<>();
+        miembro.put("uid", uid);
+        miembro.put("nombre", nombreJugador);
+        miembro.put("alias", alias);
+        miembro.put("posicion", posicion);
+        miembro.put("dorsal", dorsal);
+        miembro.put("fotoUrl", fotoUrl);
+        miembro.put("rol", "jugador");
+
+        db.collection("equipos")
+                .document(equipoId)
+                .collection("miembros")
+                .document(uid)
+                .set(miembro)
+
                 .addOnSuccessListener(a -> {
 
                     Map<String, Object> updateUser = new HashMap<>();

@@ -4,9 +4,12 @@ import android.os.Bundle;
 import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.*;
+
+import com.bumptech.glide.Glide;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.*;
+
 import java.util.*;
 
 public class MensajesActivity extends AppCompatActivity {
@@ -14,6 +17,9 @@ public class MensajesActivity extends AppCompatActivity {
     RecyclerView recycler;
     EditText edtMensaje;
     ImageButton btnEnviar;
+
+    ImageView imgLogoEquipo;
+    TextView txtNombreEquipo;
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     String equipoId, uid;
@@ -30,6 +36,9 @@ public class MensajesActivity extends AppCompatActivity {
         edtMensaje = findViewById(R.id.edtMensaje);
         btnEnviar = findViewById(R.id.btnEnviar);
 
+        imgLogoEquipo = findViewById(R.id.imgLogoEquipo);
+        txtNombreEquipo = findViewById(R.id.txtNombreEquipo);
+
         uid = FirebaseAuth.getInstance().getUid();
         equipoId = getSharedPreferences("EQUIPO", MODE_PRIVATE)
                 .getString("equipoId", null);
@@ -38,10 +47,63 @@ public class MensajesActivity extends AppCompatActivity {
         recycler.setLayoutManager(new LinearLayoutManager(this));
         recycler.setAdapter(adapter);
 
+        cargarDatosEquipo();
         escucharMensajes();
+
         btnEnviar.setOnClickListener(v -> enviarMensaje());
     }
 
+    // =====================================================
+    // HEADER EQUIPO
+    // =====================================================
+    private void cargarDatosEquipo() {
+
+        var prefs = getSharedPreferences("EQUIPO", MODE_PRIVATE);
+
+        String nombreLocal = prefs.getString("nombre", null);
+        String logoLocal = prefs.getString("logoUrl", null);
+
+        if (nombreLocal != null) {
+            txtNombreEquipo.setText(nombreLocal);
+        }
+
+        if (logoLocal != null) {
+            Glide.with(this)
+                    .load(logoLocal)
+                    .circleCrop()
+                    .into(imgLogoEquipo);
+        }
+
+        if (equipoId == null) return;
+
+        db.collection("equipos").document(equipoId)
+                .get()
+                .addOnSuccessListener(doc -> {
+
+                    if (!doc.exists()) return;
+
+                    String nombre = doc.getString("nombre");
+                    String logo = doc.getString("logoUrl");
+
+                    if (nombre != null) {
+                        if (nombre.length() > 15) {
+                            nombre = nombre.substring(0, 15) + "…";
+                        }
+                        txtNombreEquipo.setText(nombre);
+                    }
+
+                    if (logo != null) {
+                        Glide.with(this)
+                                .load(logo)
+                                .circleCrop()
+                                .into(imgLogoEquipo);
+                    }
+                });
+    }
+
+    // =====================================================
+    // MENSAJES
+    // =====================================================
     private void escucharMensajes() {
 
         if (equipoId == null) return;
@@ -52,20 +114,13 @@ public class MensajesActivity extends AppCompatActivity {
                 .orderBy("timestamp")
                 .addSnapshotListener((snap, e) -> {
 
-                    if (e != null) {
-                        e.printStackTrace();
-                        return;
-                    }
-
-                    if (snap == null) return;
+                    if (e != null || snap == null) return;
 
                     lista.clear();
 
                     for (DocumentSnapshot d : snap.getDocuments()) {
                         MensajeModel m = d.toObject(MensajeModel.class);
-                        if (m != null) {
-                            lista.add(m);
-                        }
+                        if (m != null) lista.add(m);
                     }
 
                     adapter.notifyDataSetChanged();
@@ -75,7 +130,6 @@ public class MensajesActivity extends AppCompatActivity {
                     }
                 });
     }
-
 
     private void enviarMensaje() {
 
@@ -111,18 +165,13 @@ public class MensajesActivity extends AppCompatActivity {
 
                     if (!doc.exists()) return;
 
-                    //  JUGADORES
-
                     List<Map<String, Object>> jugadores =
                             (List<Map<String, Object>>) doc.get("jugadores");
 
                     if (jugadores != null) {
                         for (Map<String, Object> j : jugadores) {
-
                             String uidJugador = (String) j.get("uid");
-                            if (uidJugador == null) continue;
-
-                            if (uidJugador.equals(uid)) continue;
+                            if (uidJugador == null || uidJugador.equals(uid)) continue;
 
                             NotificacionUtil.crear(
                                     uidJugador,
@@ -135,10 +184,7 @@ public class MensajesActivity extends AppCompatActivity {
                         }
                     }
 
-
-                    //  ENTRENADOR
                     String entrenadorUid = doc.getString("entrenadorUid");
-
                     if (entrenadorUid != null && !entrenadorUid.equals(uid)) {
                         NotificacionUtil.crear(
                                 entrenadorUid,
@@ -151,5 +197,4 @@ public class MensajesActivity extends AppCompatActivity {
                     }
                 });
     }
-
 }

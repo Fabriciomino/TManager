@@ -92,15 +92,11 @@ public class MiInformacionActivity extends AppCompatActivity {
         btnEliminarCuenta.setOnClickListener(v -> confirmarEliminarCuenta());
     }
 
-    // 🔴 ATRÁS = NO GUARDAR NADA
     @Override
     public void onBackPressed() {
         finish();
     }
 
-    // -----------------------------------------
-    // FOTO PERFIL
-    // -----------------------------------------
     private void seleccionarFoto() {
         Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(i, PICK_IMAGE);
@@ -134,12 +130,12 @@ public class MiInformacionActivity extends AppCompatActivity {
 
                                         String fotoNueva = url.toString();
 
-// 1️⃣ GUARDAR EN FIRESTORE
+                                        //  GUARDAR EN FIRESTORE
                                         db.collection("usuarios")
                                                 .document(user.getUid())
                                                 .update("fotoUrl", fotoNueva);
 
-// 2️⃣ ACTUALIZAR FIREBASE AUTH (CLAVE 🔥)
+                                        // ACTUALIZAR FIREBASE AUTH
                                         UserProfileChangeRequest profileUpdates =
                                                 new UserProfileChangeRequest.Builder()
                                                         .setPhotoUri(Uri.parse(fotoNueva))
@@ -163,9 +159,6 @@ public class MiInformacionActivity extends AppCompatActivity {
     }
 
 
-    // -----------------------------------------
-    // NOMBRE
-    // -----------------------------------------
     private void confirmarGuardarNombre() {
         String nombre = edtNombre.getText().toString().trim();
         if (nombre.isEmpty()) {
@@ -184,9 +177,7 @@ public class MiInformacionActivity extends AppCompatActivity {
                 .show();
     }
 
-    // -----------------------------------------
-    // PASSWORD
-    // -----------------------------------------
+
     private void confirmarGuardarPassword() {
 
         String actual = edtPassActual.getText().toString();
@@ -232,9 +223,7 @@ public class MiInformacionActivity extends AppCompatActivity {
                         toast("Contraseña actual incorrecta"));
     }
 
-    // -----------------------------------------
-    // OJOS
-    // -----------------------------------------
+
     private void configurarOjos() {
         toggleEye(eyeActual, edtPassActual);
         toggleEye(eyeNueva, edtPassNueva);
@@ -258,9 +247,6 @@ public class MiInformacionActivity extends AppCompatActivity {
         });
     }
 
-    // -----------------------------------------
-    // VALIDACIÓN PASSWORD
-    // -----------------------------------------
     private void configurarValidacionPassword() {
         edtPassNueva.addTextChangedListener(new TextWatcher() {
             public void onTextChanged(CharSequence s, int a, int b, int c) {
@@ -287,7 +273,6 @@ public class MiInformacionActivity extends AppCompatActivity {
         rule5.setTextColor(p.matches(".*[@#_$%^&+=!¿?.-].*") ? 0xFF00E676 : 0xFFFFFFFF);
     }
 
-    // -----------------------------------------
     private void detectarProveedor() {
         FirebaseUser u = auth.getCurrentUser();
         if (u == null) return;

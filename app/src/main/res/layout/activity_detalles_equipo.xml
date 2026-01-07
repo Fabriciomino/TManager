@@ -60,7 +60,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Guardar cambios"
-                android:background="#EEEEEE"
+                android:background="@drawable/btn_gris_selector"
                 android:textColor="#6A1B9A"
                 android:layout_marginTop="12dp"/>
 
@@ -69,9 +69,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Eliminar equipo"
-                android:background="#B71C1C"
+                android:background="@drawable/btn_rojo_selector"
                 android:textColor="#FFFFFF"
-                android:layout_marginTop="300dp"/>
+                android:layout_marginTop="420dp"/>
         </LinearLayout>
 
     </LinearLayout>

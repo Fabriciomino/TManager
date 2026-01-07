@@ -198,7 +198,7 @@
                 android:id="@+id/btnCerrarSesion"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#EEEEEE"
+                android:background="@drawable/btn_gris_selector"
                 android:textColor="#6A1B9A"
                 android:text="Cerrar sesión"/>
 
@@ -208,7 +208,7 @@
                 android:layout_height="wrap_content"
                 android:text="Eliminar cuenta"
                 android:layout_marginTop="30dp"
-                android:backgroundTint="#B71C1C"
+                android:background="@drawable/btn_rojo_selector"
                 android:textColor="#FFFFFF"/>
         </LinearLayout>
 

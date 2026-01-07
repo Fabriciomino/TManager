@@ -16,6 +16,7 @@ import com.google.android.gms.auth.api.signin.*;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.*;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -50,6 +51,7 @@ public class LoginActivity extends AppCompatActivity {
         btnGoogle.setOnClickListener(v -> iniciarGoogle());
         btnVerPassword.setOnClickListener(v -> togglePassword());
         txtIrRegistro.setOnClickListener(v -> irARegistro());
+
     }
 
     private void configurarGoogle() {
@@ -78,9 +80,9 @@ public class LoginActivity extends AppCompatActivity {
 
         auth.signInWithEmailAndPassword(mail, pass)
                 .addOnSuccessListener(authResult -> {
-                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                    finish();
+                    comprobarEquipoYRedirigir();
                 })
+
                 .addOnFailureListener(e ->
                         Toast.makeText(this, "Error login: " + e.getMessage(), Toast.LENGTH_SHORT).show()
                 );
@@ -122,8 +124,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 auth.signInWithCredential(credential)
                         .addOnSuccessListener(authResult -> {
-                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                            finish();
+                            comprobarEquipoYRedirigir();
                         })
                         .addOnFailureListener(e ->
                                 Toast.makeText(this, "Error auth Google: " + e.getMessage(), Toast.LENGTH_SHORT).show()
@@ -134,4 +135,30 @@ public class LoginActivity extends AppCompatActivity {
             }
         }
     }
+    private void comprobarEquipoYRedirigir() {
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        db.collection("usuarios")
+                .document(auth.getUid())
+                .get()
+                .addOnSuccessListener(doc -> {
+
+                    String equipoId = doc.getString("equipoId");
+                    String rol = doc.getString("rol");
+
+                    if (equipoId == null && "none".equals(rol)) {
+
+                        Intent i = new Intent(this, ExpulsadoActivity.class);
+                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(i);
+                        finish();
+
+                    } else {
+                        startActivity(new Intent(this, MainActivity.class));
+                        finish();
+                    }
+                });
+    }
+
 }

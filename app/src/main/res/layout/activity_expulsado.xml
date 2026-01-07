@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#1A0026"
+    android:padding="32dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_centerInParent="true">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingBottom="60dp"
+            android:text="!Has sido eliminado del equipo¡"
+            android:textColor="#FFFFFF"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:text="Puedes unirte a otro equipo introduciendo un código o iniciar sesión con otra cuenta."
+            android:textColor="#CCCCCC"
+            android:textSize="16sp"
+            android:gravity="center"
+            android:paddingBottom="40dp"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"/>
+
+        <Button
+            android:id="@+id/btnUnirse"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn_verde_selector"
+            android:padding="15dp"
+            android:text="Unirme a otro equipo"
+            android:textColor="#1A0026"
+            android:textStyle="bold" />
+
+
+        <Button
+            android:id="@+id/btnOtraCuenta"
+            android:text="Iniciar sesión con otra cuenta"
+            android:layout_marginTop="20dp"
+            android:background="#EEEEEE"
+            android:textColor="#6A1B9A"
+            android:padding="12dp"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"/>
+    </LinearLayout>
+
+</RelativeLayout>

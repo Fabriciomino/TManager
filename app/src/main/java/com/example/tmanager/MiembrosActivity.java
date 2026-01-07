@@ -11,7 +11,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.*;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +30,8 @@ public class MiembrosActivity extends AppCompatActivity {
     private JugadoresAdapter adapter;
     private List<Map<String, Object>> jugadores = new ArrayList<>();
 
+    private boolean esEntrenador = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,37 +40,28 @@ public class MiembrosActivity extends AppCompatActivity {
         imgEscudoEquipo = findViewById(R.id.imgEscudoEquipo);
         txtNombreEquipo = findViewById(R.id.txtNombreEquipo);
         txtCodigoEquipo = findViewById(R.id.txtCodigoEquipo);
-
         imgEntrenador = findViewById(R.id.imgEntrenador);
         txtEntrenador = findViewById(R.id.txtEntrenador);
 
         recyclerJugadores = findViewById(R.id.recyclerJugadores);
         recyclerJugadores.setLayoutManager(new LinearLayoutManager(this));
 
-        adapter = new JugadoresAdapter(this, jugadores);
-        recyclerJugadores.setAdapter(adapter);
+
 
         db = FirebaseFirestore.getInstance();
 
-        FirebaseAuth auth = FirebaseAuth.getInstance();
-        if (auth.getCurrentUser() == null) {
+        String uid = FirebaseAuth.getInstance().getUid();
+        if (uid == null) {
             Toast.makeText(this, "Sesión no válida", Toast.LENGTH_SHORT).show();
             finish();
             return;
         }
 
-        String uid = auth.getCurrentUser().getUid();
-
         db.collection("usuarios").document(uid)
                 .get()
-                .addOnSuccessListener(doc -> {
+                .addOnSuccessListener(userDoc -> {
 
-                    if (!doc.exists()) {
-                        finish();
-                        return;
-                    }
-
-                    equipoId = doc.getString("equipoId");
+                    equipoId = userDoc.getString("equipoId");
 
                     if (equipoId == null) {
                         Toast.makeText(this, "No perteneces a ningún equipo", Toast.LENGTH_SHORT).show();
@@ -75,13 +69,25 @@ public class MiembrosActivity extends AppCompatActivity {
                         return;
                     }
 
-                    cargarEquipoYEntrenador();
-                    cargarJugadores();
+                    String rol = userDoc.getString("rol");
+                    esEntrenador = "entrenador".equals(rol);
+
+                    adapter = new JugadoresAdapter(
+                            this,
+                            jugadores,
+                            equipoId,
+                            esEntrenador
+                    );
+                    recyclerJugadores.setAdapter(adapter);
+
+                    cargarEquipo();
+                    cargarMiembros();
                 });
+
     }
 
-    //          EQUIPO + ENTRENADOR
-    private void cargarEquipoYEntrenador() {
+
+    private void cargarEquipo() {
 
         db.collection("equipos").document(equipoId)
                 .get()
@@ -89,53 +95,64 @@ public class MiembrosActivity extends AppCompatActivity {
 
                     if (!doc.exists()) return;
 
-                    // EQUIPO
                     txtNombreEquipo.setText(doc.getString("nombre"));
                     txtCodigoEquipo.setText("Código: " + doc.getString("codigo"));
 
                     String logo = doc.getString("logoUrl");
                     if (logo != null && !logo.isEmpty()) {
-                        Glide.with(this).load(logo).circleCrop().into(imgEscudoEquipo);
+                        Glide.with(this)
+                                .load(logo)
+                                .circleCrop()
+                                .into(imgEscudoEquipo);
+                    } else {
+                        imgEscudoEquipo.setImageResource(R.drawable.circle_empty);
                     }
-
-                    // ENTRENADOR
-                    String entrenadorUid = doc.getString("entrenadorUid");
-                    if (entrenadorUid == null) return;
-
-                    db.collection("usuarios").document(entrenadorUid)
-                            .get()
-                            .addOnSuccessListener(user -> {
-
-                                if (!user.exists()) return;
-
-                                txtEntrenador.setText(user.getString("nombre"));
-
-                                String foto = user.getString("fotoUrl");
-                                if (foto != null && !foto.isEmpty()) {
-                                    Glide.with(this)
-                                            .load(foto)
-                                            .circleCrop()
-                                            .into(imgEntrenador);
-                                }
-                            });
                 });
     }
 
 
-    private void cargarJugadores() {
+    private void cargarMiembros() {
 
-        db.collection("equipos").document(equipoId)
-                .addSnapshotListener((doc, e) -> {
+        // Estado inicial visible
+        txtEntrenador.setText("Entrenador");
+        imgEntrenador.setImageResource(R.drawable.userlogo);
 
-                    if (e != null || doc == null || !doc.exists()) return;
+        jugadores.clear();
 
-                    List<Map<String, Object>> list =
-                            (List<Map<String, Object>>) doc.get("jugadores");
+        db.collection("equipos")
+                .document(equipoId)
+                .collection("miembros")
+                .addSnapshotListener((snap, e) -> {
+
+                    if (e != null || snap == null) return;
 
                     jugadores.clear();
 
-                    if (list != null)
-                        jugadores.addAll(list);
+                    for (DocumentSnapshot d : snap.getDocuments()) {
+
+                        String rol = d.getString("rol");
+
+                        if ("entrenador".equals(rol)) {
+
+                            // ===== ENTRENADOR =====
+                            txtEntrenador.setText(d.getString("nombre"));
+
+                            String foto = d.getString("fotoUrl");
+                            if (foto != null && !foto.isEmpty()) {
+                                Glide.with(this)
+                                        .load(foto)
+                                        .circleCrop()
+                                        .into(imgEntrenador);
+                            } else {
+                                imgEntrenador.setImageResource(R.drawable.userlogo);
+                            }
+
+                        } else if ("jugador".equals(rol)) {
+
+                            // ===== JUGADORES =====
+                            jugadores.add(d.getData());
+                        }
+                    }
 
                     adapter.notifyDataSetChanged();
                 });

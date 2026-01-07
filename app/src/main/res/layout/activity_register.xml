@@ -142,26 +142,26 @@
                 android:id="@+id/txtIrLogin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="¿Ya tienes cuenta? Iniciar sesión"
-                android:textColor="#00E676"
-                android:textSize="16sp"
                 android:layout_gravity="center"
-                android:paddingTop="25dp" />
+                android:paddingTop="25dp"
+                android:text="¿Ya tienes cuenta? Iniciar sesión"
+                android:textColor="@color/login_selector"
+                android:textSize="16sp" />
 
         </LinearLayout>
     </ScrollView>
 
     <Button
         android:id="@+id/btnRegistrar"
-        android:layout_width="wrap_content"
+        android:layout_width="341dp"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/btn_verde_selector"
+        android:padding="15dp"
         android:text="Registrarme"
         android:textColor="#1A0026"
-        android:textStyle="bold"
-        android:textSize="20sp"
-        android:background="#00E676"
-        android:padding="15dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
+        android:textSize="18sp"
+        android:textStyle="bold" />
 
 </RelativeLayout>

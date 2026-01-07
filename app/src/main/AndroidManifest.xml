@@ -47,6 +47,7 @@
         <activity android:name=".NotificacionesActivity" android:exported="true" />
         <activity android:name=".MensajesActivity" android:exported="true" />
         <activity android:name=".AlineacionActivity" android:exported="true" />
+        <activity android:name=".ExpulsadoActivity" android:exported="true" />
         <service
             android:name=".MyFirebaseMessagingService"
             android:exported="false">

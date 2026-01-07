@@ -15,6 +15,7 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.*;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -75,12 +76,13 @@ public class RegisterActivity extends AppCompatActivity {
         btnVerPass2.setOnClickListener(v -> togglePassword(edtPassword2, btnVerPass2, false));
     }
 
-
-    // VALIDACIÓN VISUAL DE CONTRASEÑA
+    // VALIDACIÓN PASSWORD
     private void configurarPasswordListeners() {
         edtPassword.addTextChangedListener(new TextWatcher() {
             @Override public void beforeTextChanged(CharSequence s, int i, int i1, int i2) {}
-            @Override public void onTextChanged(CharSequence s, int i, int i1, int i2) { validarPassword(s.toString()); }
+            @Override public void onTextChanged(CharSequence s, int i, int i1, int i2) {
+                validarPassword(s.toString());
+            }
             @Override public void afterTextChanged(Editable editable) {}
         });
     }
@@ -115,17 +117,18 @@ public class RegisterActivity extends AppCompatActivity {
                 new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                         .requestIdToken(getString(R.string.default_web_client_id))
                         .requestEmail()
+                        .requestProfile()
                         .build();
 
         googleClient = GoogleSignIn.getClient(this, gso);
     }
 
     private void iniciarGoogle() {
-        Intent intent = googleClient.getSignInIntent();
-        startActivityForResult(intent, RC_GOOGLE);
+        startActivityForResult(googleClient.getSignInIntent(), RC_GOOGLE);
     }
 
     private void registrarManual() {
+
         String nombre = edtNombre.getText().toString().trim();
         String correo = edtEmail.getText().toString().trim();
         String pass = edtPassword.getText().toString().trim();
@@ -142,24 +145,32 @@ public class RegisterActivity extends AppCompatActivity {
         }
 
         auth.createUserWithEmailAndPassword(correo, pass)
-                .addOnSuccessListener(result -> {
+                .addOnSuccessListener(r -> {
                     FirebaseUser user = auth.getCurrentUser();
-                    if (user != null) guardarUsuarioEnFirestore(user.getUid(), nombre, correo);
+                    if (user != null) {
+                        guardarUsuarioEnFirestore(
+                                user.getUid(),
+                                nombre,
+                                correo,
+                                null
+                        );
+                    }
                 })
                 .addOnFailureListener(e ->
-                        Toast.makeText(this, "Error registro: " + e.getMessage(), Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show()
                 );
     }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == RC_GOOGLE) {
-            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-
             try {
-                GoogleSignInAccount account = task.getResult(ApiException.class);
+                GoogleSignInAccount account =
+                        GoogleSignIn.getSignedInAccountFromIntent(data)
+                                .getResult(ApiException.class);
 
                 if (account == null) return;
 
@@ -168,11 +179,20 @@ public class RegisterActivity extends AppCompatActivity {
 
                 auth.signInWithCredential(credential)
                         .addOnSuccessListener(r -> {
+
                             FirebaseUser user = auth.getCurrentUser();
+                            if (user == null) return;
+
+                            String fotoGoogle =
+                                    user.getPhotoUrl() != null
+                                            ? user.getPhotoUrl().toString()
+                                            : null;
+
                             guardarUsuarioEnFirestore(
                                     user.getUid(),
                                     user.getDisplayName(),
-                                    user.getEmail()
+                                    user.getEmail(),
+                                    fotoGoogle
                             );
                         });
 
@@ -182,7 +202,13 @@ public class RegisterActivity extends AppCompatActivity {
         }
     }
 
-    private void guardarUsuarioEnFirestore(String uid, String nombre, String correo) {
+    private void guardarUsuarioEnFirestore(
+            String uid,
+            String nombre,
+            String correo,
+            @Nullable String fotoUrl
+    ) {
+
         Map<String, Object> user = new HashMap<>();
         user.put("uid", uid);
         user.put("nombre", nombre);
@@ -191,16 +217,19 @@ public class RegisterActivity extends AppCompatActivity {
         user.put("equipoId", null);
         user.put("creado", new Date());
 
-        db.collection("usuarios").document(uid)
-                .set(user)
-                .addOnSuccessListener(aVoid -> {
-                    Intent i = new Intent(this, WelcomeActivity.class);
-                    i.putExtra("nombre_usuario", nombre);
-                    startActivity(i);
+        if (fotoUrl != null)
+            user.put("fotoUrl", fotoUrl);
+
+        db.collection("usuarios")
+                .document(uid)
+                .set(user, SetOptions.merge())
+                .addOnSuccessListener(a -> {
+                    startActivity(new Intent(this, WelcomeActivity.class));
                     finish();
                 })
                 .addOnFailureListener(e ->
-                        Toast.makeText(this, "Error guardando usuario", Toast.LENGTH_SHORT).show());
+                        Toast.makeText(this, "Error guardando usuario", Toast.LENGTH_SHORT).show()
+                );
     }
 
     private void irALogin() {

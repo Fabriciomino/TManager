@@ -48,7 +48,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Iniciar sesión"
-            android:textColor="#FFFFFF"
+            android:textColor="@color/register_selector"
             android:textSize="20sp"
             android:textStyle="bold"
             android:padding="10dp"

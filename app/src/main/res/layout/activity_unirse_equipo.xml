@@ -124,6 +124,7 @@
             android:textSize="18sp"
             android:textColor="#000000"
             android:textStyle="bold"
-            android:background="#00E676"/>
+            android:background="@drawable/btn_verde_selector"
+            android:padding="15dp"/>
     </LinearLayout>
 </ScrollView>

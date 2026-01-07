@@ -29,6 +29,7 @@ import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 public class CrearEquipoActivity extends AppCompatActivity {
@@ -144,6 +145,27 @@ public class CrearEquipoActivity extends AppCompatActivity {
                                     .addOnSuccessListener(documentRef -> {
 
                                         String equipoId = documentRef.getId();
+
+                                        Map<String, Object> entrenador = new HashMap<>();
+                                        entrenador.put("uid", uidEntrenador);
+                                        String nombreEntrenador = user.getDisplayName();
+
+                                        if (nombreEntrenador == null || nombreEntrenador.isEmpty()) {
+                                            nombreEntrenador = edtNombreEquipo.getText().toString().trim();
+                                        }
+
+                                        entrenador.put("nombre", nombreEntrenador);
+
+                                        entrenador.put("fotoUrl", user.getPhotoUrl() != null
+                                                ? user.getPhotoUrl().toString()
+                                                : null);
+                                        entrenador.put("rol", "entrenador");
+
+                                        db.collection("equipos")
+                                                .document(equipoId)
+                                                .collection("miembros")
+                                                .document(uidEntrenador)
+                                                .set(entrenador);
 
                                         HashMap<String, Object> datosUsuario = new HashMap<>();
                                         datosUsuario.put("rol", "entrenador");
