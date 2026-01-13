@@ -53,9 +53,7 @@ public class MensajesActivity extends AppCompatActivity {
         btnEnviar.setOnClickListener(v -> enviarMensaje());
     }
 
-    // =====================================================
-    // HEADER EQUIPO
-    // =====================================================
+
     private void cargarDatosEquipo() {
 
         var prefs = getSharedPreferences("EQUIPO", MODE_PRIVATE);
@@ -101,9 +99,7 @@ public class MensajesActivity extends AppCompatActivity {
                 });
     }
 
-    // =====================================================
-    // MENSAJES
-    // =====================================================
+
     private void escucharMensajes() {
 
         if (equipoId == null) return;
@@ -136,26 +132,39 @@ public class MensajesActivity extends AppCompatActivity {
         String texto = edtMensaje.getText().toString().trim();
         if (texto.isEmpty()) return;
 
-        edtMensaje.setText("");
 
         db.collection("usuarios").document(uid).get()
                 .addOnSuccessListener(u -> {
 
-                    MensajeModel m = new MensajeModel();
-                    m.userUid = uid;
-                    m.nombre = u.getString("nombre");
-                    m.fotoUrl = u.getString("fotoUrl");
-                    m.texto = texto;
-                    m.timestamp = new Timestamp(new Date());
+                    String rol = u.getString("rol");
+                    String fotoUrl = u.getString("fotoUrl");
 
-                    db.collection("mensajes")
-                            .document(equipoId)
-                            .collection("chat")
-                            .add(m);
+                    if ("jugador".equals(rol)) {
 
-                    notificarEquipo(m.nombre);
+                        // 🔥 BUSCAR ALIAS DEL JUGADOR
+                        db.collection("equipos")
+                                .document(equipoId)
+                                .collection("miembros")
+                                .document(uid)
+                                .get()
+                                .addOnSuccessListener(mDoc -> {
+
+                                    String alias = mDoc.getString("alias");
+                                    String nombre = (alias != null && !alias.isEmpty())
+                                            ? alias
+                                            : u.getString("nombre");
+
+                                    enviarMensajeFinal(nombre, fotoUrl);
+                                });
+
+                    } else {
+                        // 🔥 ENTRENADOR
+                        String nombre = u.getString("nombre");
+                        enviarMensajeFinal(nombre, fotoUrl);
+                    }
                 });
     }
+
 
     private void notificarEquipo(String nombre) {
 
@@ -197,4 +206,24 @@ public class MensajesActivity extends AppCompatActivity {
                     }
                 });
     }
+    private void enviarMensajeFinal(String nombreMostrar, String fotoUrl) {
+
+        MensajeModel m = new MensajeModel();
+        m.userUid = uid;
+        m.nombre = nombreMostrar;
+        m.fotoUrl = fotoUrl;
+        m.texto = edtMensaje.getText().toString().trim();
+        m.timestamp = new Timestamp(new Date());
+
+        edtMensaje.setText("");
+
+        db.collection("mensajes")
+                .document(equipoId)
+                .collection("chat")
+                .add(m);
+
+        // 🔔 NOTIFICACIONES CON ALIAS / NOMBRE CORRECTO
+        notificarEquipo(nombreMostrar);
+    }
+
 }

@@ -76,7 +76,7 @@ public class RegisterActivity extends AppCompatActivity {
         btnVerPass2.setOnClickListener(v -> togglePassword(edtPassword2, btnVerPass2, false));
     }
 
-    // VALIDACIÓN PASSWORD
+
     private void configurarPasswordListeners() {
         edtPassword.addTextChangedListener(new TextWatcher() {
             @Override public void beforeTextChanged(CharSequence s, int i, int i1, int i2) {}
@@ -146,19 +146,30 @@ public class RegisterActivity extends AppCompatActivity {
 
         auth.createUserWithEmailAndPassword(correo, pass)
                 .addOnSuccessListener(r -> {
+
                     FirebaseUser user = auth.getCurrentUser();
-                    if (user != null) {
-                        guardarUsuarioEnFirestore(
-                                user.getUid(),
-                                nombre,
-                                correo,
-                                null
-                        );
-                    }
+                    if (user == null) return;
+
+                    UserProfileChangeRequest profileUpdates =
+                            new UserProfileChangeRequest.Builder()
+                                    .setDisplayName(nombre)
+                                    .build();
+
+                    user.updateProfile(profileUpdates)
+                            .addOnSuccessListener(a -> {
+
+                                guardarUsuarioEnFirestore(
+                                        user.getUid(),
+                                        nombre,
+                                        correo,
+                                        null
+                                );
+                            });
                 })
                 .addOnFailureListener(e ->
                         Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show()
                 );
+
     }
 
 

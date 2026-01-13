@@ -51,7 +51,7 @@
                 android:layout_marginTop="8dp"/>
         </LinearLayout>
 
-        <!-- NOMBRE + TICK -->
+        <!-- NOMBRE -->
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -61,7 +61,7 @@
                 android:id="@+id/edtNombre"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Nombre / Alias"
+                android:hint="Nombre"
                 android:layout_toStartOf="@id/btnSaveNombre"/>
 
             <ImageView
@@ -72,6 +72,30 @@
                 android:layout_centerVertical="true"
                 android:src="@drawable/ic_check_green"/>
         </RelativeLayout>
+
+        <!-- ALIAS -->
+        <RelativeLayout
+            android:id="@+id/layoutAlias"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp">
+
+            <EditText
+                android:id="@+id/edtAlias"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Alias"
+                android:layout_toStartOf="@id/btnSaveAlias"/>
+
+            <ImageView
+                android:id="@+id/btnSaveAlias"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_check_green"/>
+        </RelativeLayout>
+
 
         <!-- EMAIL -->
         <TextView
@@ -112,7 +136,6 @@
                     android:src="@drawable/ic_eye_closed_dark"/>
             </RelativeLayout>
 
-            <!-- NUEVA -->
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -148,7 +171,6 @@
                     android:hint="Confirmar contraseña"
                     android:inputType="textPassword"
                     android:layout_toStartOf="@id/btnSavePassword"/>
-
                 <!-- OJO -->
                 <ImageView
                     android:id="@+id/btnEyeConfirmar"
@@ -159,7 +181,6 @@
                     android:layout_marginEnd="36dp"
                     android:src="@drawable/ic_eye_closed_dark"/>
 
-                <!-- CHECK -->
                 <ImageView
                     android:id="@+id/btnSavePassword"
                     android:layout_width="28dp"
@@ -168,7 +189,6 @@
                     android:layout_centerVertical="true"
                     android:src="@drawable/ic_check_green"/>
             </RelativeLayout>
-
 
             <!-- REGLAS -->
             <LinearLayout
@@ -207,7 +227,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Eliminar cuenta"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="20dp"
                 android:background="@drawable/btn_rojo_selector"
                 android:textColor="#FFFFFF"/>
         </LinearLayout>

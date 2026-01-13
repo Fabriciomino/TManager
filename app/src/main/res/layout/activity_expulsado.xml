@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:paddingBottom="60dp"
-            android:text="!Has sido eliminado del equipo¡"
+            android:text="¡Has sido eliminado del equipo!"
             android:textColor="#FFFFFF"
             android:textSize="24sp"
             android:textStyle="bold" />
@@ -46,9 +46,9 @@
             android:id="@+id/btnOtraCuenta"
             android:text="Iniciar sesión con otra cuenta"
             android:layout_marginTop="20dp"
-            android:background="#EEEEEE"
+            android:background="@drawable/btn_gris_selector"
             android:textColor="#6A1B9A"
-            android:padding="12dp"
+            android:padding="15dp"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"/>
     </LinearLayout>

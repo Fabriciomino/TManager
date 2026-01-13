@@ -242,7 +242,7 @@ public class EventosFragment extends Fragment {
     }
 
 
-    //         MENÚ DE OPCIONES
+    //     MENÚ DE OPCIONES
 
     private void mostrarOpcionesEvento(int pos) {
 
@@ -287,7 +287,7 @@ public class EventosFragment extends Fragment {
                 .show();
     }
 
-    //        DIÁLOGO CREAR
+    //       DIÁLOGO CREAR
 
     private void mostrarDialogo(int posEditing) {
 
@@ -323,12 +323,12 @@ public class EventosFragment extends Fragment {
 
         EventModel editEvent = (posEditing != -1) ? listaEventos.get(posEditing) : null;
         if (editEvent == null) {
-            spnTipo.setSelection(0); // Evento normal
+            spnTipo.setSelection(0);
             layoutPartido.setVisibility(View.GONE);
             edtTitulo.setEnabled(true);
             edtRival.setText("");
             escudoUriSeleccionada = null;
-            imgEscudoDialog.setImageDrawable(null);
+            imgEscudoDialog.setImageResource(R.drawable.circle_empty);
         }
 
 
@@ -485,7 +485,6 @@ public class EventosFragment extends Fragment {
         data.put("creadorUid", auth.getCurrentUser().getUid());
         data.put("fechaHoraTimestamp", new Timestamp(fechaHora));
 
-        // 🎯 CONVOCATORIA SE GUARDA AQUÍ
         data.put("convocados", convocados);
         data.put("finalizado", false);
 

@@ -32,6 +32,10 @@ public class MiInformacionActivity extends AppCompatActivity {
 
     TextView rule1, rule2, rule3, rule4, rule5;
     LinearLayout layoutPassword;
+    EditText edtAlias;
+    ImageView btnSaveAlias;
+    View layoutAlias;
+
 
     FirebaseAuth auth = FirebaseAuth.getInstance();
     FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -49,6 +53,11 @@ public class MiInformacionActivity extends AppCompatActivity {
         imgPerfil = findViewById(R.id.imgPerfil);
         edtNombre = findViewById(R.id.edtNombre);
         txtEmail = findViewById(R.id.txtEmail);
+
+        edtAlias = findViewById(R.id.edtAlias);
+        btnSaveAlias = findViewById(R.id.btnSaveAlias);
+        layoutAlias = findViewById(R.id.layoutAlias);
+
 
         edtPassActual = findViewById(R.id.edtPasswordActual);
         edtPassNueva = findViewById(R.id.edtPasswordNueva);
@@ -79,15 +88,10 @@ public class MiInformacionActivity extends AppCompatActivity {
         cargarFotoPerfil();
 
 
-        // FOTO
         imgPerfil.setOnClickListener(v -> seleccionarFoto());
-
-        // GUARDAR NOMBRE
         btnSaveNombre.setOnClickListener(v -> confirmarGuardarNombre());
-
-        // GUARDAR PASSWORD
+        btnSaveAlias.setOnClickListener(v -> confirmarGuardarAlias());
         btnSavePassword.setOnClickListener(v -> confirmarGuardarPassword());
-
         btnCerrarSesion.setOnClickListener(v -> cerrarSesion());
         btnEliminarCuenta.setOnClickListener(v -> confirmarEliminarCuenta());
     }
@@ -284,15 +288,42 @@ public class MiInformacionActivity extends AppCompatActivity {
     }
 
     private void cargarDatos() {
+
         FirebaseUser u = auth.getCurrentUser();
         if (u == null) return;
+
         txtEmail.setText(u.getEmail());
 
-        db.collection("usuarios").document(u.getUid())
+        db.collection("usuarios")
+                .document(u.getUid())
                 .get()
-                .addOnSuccessListener(d ->
-                        edtNombre.setText(d.getString("nombre")));
+                .addOnSuccessListener(d -> {
+
+                    edtNombre.setText(d.getString("nombre"));
+
+                    String rol = d.getString("rol");
+                    String equipoId = d.getString("equipoId");
+
+                    if (!"jugador".equals(rol) || equipoId == null) {
+                        layoutAlias.setVisibility(View.GONE);
+                        return;
+                    }
+
+                    layoutAlias.setVisibility(View.VISIBLE);
+
+                    // 🔥 LEER ALIAS DESDE MIEMBROS
+                    db.collection("equipos")
+                            .document(equipoId)
+                            .collection("miembros")
+                            .document(u.getUid())
+                            .get()
+                            .addOnSuccessListener(mDoc -> {
+                                edtAlias.setText(mDoc.getString("alias"));
+                            });
+                });
     }
+
+
 
     private void cerrarSesion() {
         auth.signOut();
@@ -353,5 +384,46 @@ public class MiInformacionActivity extends AppCompatActivity {
                         imgPerfil.setImageResource(R.drawable.userlogo)
                 );
     }
+    private void confirmarGuardarAlias() {
+
+        String alias = edtAlias.getText().toString().trim();
+        if (alias.isEmpty()) {
+            toast("El alias no puede estar vacío");
+            return;
+        }
+
+        String uid = auth.getUid();
+        if (uid == null) return;
+
+        new AlertDialog.Builder(this)
+                .setTitle("Cambiar alias")
+                .setMessage("¿Deseas guardar este alias?")
+                .setPositiveButton("Guardar", (d, w) -> {
+
+                    db.collection("usuarios")
+                            .document(uid)
+                            .get()
+                            .addOnSuccessListener(uDoc -> {
+
+                                String equipoId = uDoc.getString("equipoId");
+                                if (equipoId == null) return;
+
+                                // 🔥 GUARDAR DONDE REALMENTE SE USA
+                                db.collection("equipos")
+                                        .document(equipoId)
+                                        .collection("miembros")
+                                        .document(uid)
+                                        .update("alias", alias)
+                                        .addOnSuccessListener(a ->
+                                                toast("Alias actualizado correctamente")
+                                        );
+                            });
+                })
+                .setNegativeButton("Cancelar", null)
+                .show();
+    }
+
+
+
 
 }

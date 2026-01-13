@@ -157,9 +157,14 @@ public class UnirseEquipoActivity extends AppCompatActivity {
     private void unirJugador(DocumentSnapshot equipoDoc, String equipoId, String uid,
                              String nombreJugador, String fotoUrl) {
 
+
         String alias = edtAlias.getText().toString().trim();
         String dorsal = edtDorsal.getText().toString().trim();
         String posicion = spinnerPosicion.getSelectedItem().toString();
+
+        String nombreMostrar = (alias != null && !alias.isEmpty())
+                ? alias
+                : nombreJugador;
 
         if (dorsal.isEmpty()) dorsal = "-";
 
@@ -215,10 +220,9 @@ public class UnirseEquipoActivity extends AppCompatActivity {
                                             equipoId,
                                             "union_equipo",
                                             "Nuevo jugador",
-                                            nombreJugador + " se ha unido al equipo",
+                                            nombreMostrar + " se ha unido al equipo",
                                             null
                                     );
-
                                 }
 
                                 NotificacionUtil.crear(
