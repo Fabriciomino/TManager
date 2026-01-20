@@ -46,10 +46,11 @@
 
             <ImageView
                 android:id="@+id/iconMiInformacion"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@drawable/userlogo"
+                android:layout_width="25dp"
+                android:layout_height="40dp"
+                android:src="@drawable/usermenu"
                 android:layout_alignParentStart="true"
+                android:scaleType="fitCenter"
                 android:layout_marginStart="10dp"/>
 
             <TextView
@@ -84,9 +85,10 @@
 
             <ImageView
                 android:id="@+id/iconDetallesEquipo"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@drawable/usermenu"
+                android:layout_width="35dp"
+                android:layout_height="40dp"
+                android:src="@drawable/detequipo"
+                android:tint="#000000"
                 android:layout_alignParentStart="true"
                 android:layout_marginStart="10dp"/>
 
