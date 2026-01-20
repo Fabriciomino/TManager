@@ -14,6 +14,9 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.firebase.auth.*;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
@@ -42,6 +45,8 @@ public class MiInformacionActivity extends AppCompatActivity {
 
     Uri fotoUri;
     boolean esGoogle = false;
+    GoogleSignInClient googleClient;
+
 
     private static final int PICK_IMAGE = 101;
 
@@ -86,7 +91,7 @@ public class MiInformacionActivity extends AppCompatActivity {
         configurarOjos();
         configurarValidacionPassword();
         cargarFotoPerfil();
-
+        configurarGoogle();
 
         imgPerfil.setOnClickListener(v -> seleccionarFoto());
         btnSaveNombre.setOnClickListener(v -> confirmarGuardarNombre());
@@ -336,15 +341,38 @@ public class MiInformacionActivity extends AppCompatActivity {
                 .setTitle("Eliminar cuenta")
                 .setMessage("Esta acción no se puede deshacer")
                 .setPositiveButton("Eliminar", (d, w) -> {
+
                     FirebaseUser u = auth.getCurrentUser();
                     if (u == null) return;
-                    db.collection("usuarios").document(u.getUid()).delete();
-                    u.delete();
-                    cerrarSesion();
+
+                    String uid = u.getUid();
+
+                    // BORRAR USUARIO DE FIRESTORE
+                    db.collection("usuarios")
+                            .document(uid)
+                            .delete();
+
+                    if (googleClient != null) {
+                        googleClient.revokeAccess();
+                        googleClient.signOut();
+                    }
+
+                    // BORRAR USUARIO DE FIREBASE AUTH
+                    u.delete()
+                            .addOnSuccessListener(a -> {
+                                auth.signOut();
+                                irALoginLimpio();
+                            })
+                            .addOnFailureListener(e ->
+                                    Toast.makeText(this,
+                                            "Error eliminando la cuenta",
+                                            Toast.LENGTH_SHORT).show()
+                            );
                 })
                 .setNegativeButton("Cancelar", null)
                 .show();
     }
+
 
     private void toast(String t) {
         Toast.makeText(this, t, Toast.LENGTH_SHORT).show();
@@ -384,6 +412,13 @@ public class MiInformacionActivity extends AppCompatActivity {
                         imgPerfil.setImageResource(R.drawable.userlogo)
                 );
     }
+    private void irALoginLimpio() {
+        Intent i = new Intent(this, LoginActivity.class);
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(i);
+        finish();
+    }
+
     private void confirmarGuardarAlias() {
 
         String alias = edtAlias.getText().toString().trim();
@@ -421,6 +456,15 @@ public class MiInformacionActivity extends AppCompatActivity {
                 })
                 .setNegativeButton("Cancelar", null)
                 .show();
+    }
+    private void configurarGoogle() {
+        GoogleSignInOptions gso =
+                new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                        .requestIdToken(getString(R.string.default_web_client_id))
+                        .requestEmail()
+                        .build();
+
+        googleClient = GoogleSignIn.getClient(this, gso);
     }
 
 

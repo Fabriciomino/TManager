@@ -124,11 +124,48 @@ public class LoginActivity extends AppCompatActivity {
 
                 auth.signInWithCredential(credential)
                         .addOnSuccessListener(authResult -> {
-                            comprobarEquipoYRedirigir();
+
+                            FirebaseUser user = auth.getCurrentUser();
+                            if (user == null) return;
+
+                            String uid = user.getUid();
+
+                            FirebaseFirestore.getInstance()
+                                    .collection("usuarios")
+                                    .document(uid)
+                                    .get()
+                                    .addOnSuccessListener(doc -> {
+
+                                        if (!doc.exists()) {
+                                            // 🔴 USUARIO GOOGLE NO REGISTRADO
+                                            auth.signOut();
+                                            GoogleSignIn.getClient(
+                                                    this,
+                                                    GoogleSignInOptions.DEFAULT_SIGN_IN
+                                            ).signOut();
+
+                                            Toast.makeText(this,
+                                                    "Esta cuenta no está registrada. Regístrate primero.",
+                                                    Toast.LENGTH_LONG).show();
+
+                                            Intent i = new Intent(this, RegisterActivity.class);
+                                            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                            startActivity(i);
+                                            finish();
+                                            return;
+                                        }
+
+                                        // ✅ USUARIO EXISTE → LOGIN OK
+                                        startActivity(new Intent(this, MainActivity.class));
+                                        finish();
+                                    });
                         })
                         .addOnFailureListener(e ->
-                                Toast.makeText(this, "Error auth Google: " + e.getMessage(), Toast.LENGTH_SHORT).show()
+                                Toast.makeText(this,
+                                        "Error auth Google: " + e.getMessage(),
+                                        Toast.LENGTH_SHORT).show()
                         );
+
 
             } catch (ApiException e) {
                 Toast.makeText(this, "Google sign in error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
